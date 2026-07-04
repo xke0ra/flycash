@@ -1,0 +1,380 @@
+{
+  "metadata": {
+    "description": "FLY CASH v4 — Default Configuration Reference",
+    "generated": "Phase 0 — Baseline Documentation",
+    "total_keys": 78
+  },
+  "configurations": {
+    "APP_NAME": {
+      "default": "FLY CASH",
+      "type": "string",
+      "description": "Application display name",
+      "source": "admin/settings.php, dashboard/header, emails"
+    },
+    "APP_DESC": {
+      "default": "Earn Rewards & Gift Cards",
+      "type": "string",
+      "description": "Application tagline/description"
+    },
+    "APP_POLICY_URL": {
+      "default": "#",
+      "type": "string",
+      "description": "Privacy policy URL"
+    },
+    "APP_TERMS_URL": {
+      "default": "#",
+      "type": "string",
+      "description": "Terms of service URL"
+    },
+    "APP_CONTACT_US_URL": {
+      "default": "#",
+      "type": "string",
+      "description": "Contact us URL"
+    },
+    "APP_SHARE_TEXT": {
+      "default": "Hey! Check out this awesome rewards app!",
+      "type": "string",
+      "description": "Default share text for referrals"
+    },
+    "APP_SHARE_URL_ANDROID": {
+      "default": "",
+      "type": "string",
+      "description": "Android app share URL"
+    },
+    "APP_SHARE_URL_IOS": {
+      "default": "",
+      "type": "string",
+      "description": "iOS app share URL"
+    },
+    "APP_NAVBAR_ENABLE": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Enable mobile navbar"
+    },
+    "APP_TABS_ENABLE": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Enable bottom tabs"
+    },
+    "WEB_ROOT": {
+      "default": "https://example.com/",
+      "type": "string",
+      "description": "Website root URL (used in postback URLs)"
+    },
+    "VERSION": {
+      "default": "4.0",
+      "type": "string",
+      "description": "Script version"
+    },
+    "ADMIN": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Admin panel enabled status"
+    },
+    "ADMIN_IMAGE": {
+      "default": "avatar.png",
+      "type": "string",
+      "description": "Admin profile image filename"
+    },
+    "COMPANY_NAME": {
+      "default": "Your Company",
+      "type": "string",
+      "description": "Company name"
+    },
+    "COMPANY_SITE": {
+      "default": "https://example.com",
+      "type": "string",
+      "description": "Company website URL"
+    },
+    "COMPANY_EMAIL": {
+      "default": "support@example.com",
+      "type": "string",
+      "description": "Company email"
+    },
+    "COMPANY_COUNTRY": {
+      "default": "United States",
+      "type": "string",
+      "description": "Company country"
+    },
+    "SUPPORT_EMAIL": {
+      "default": "support@example.com",
+      "type": "string",
+      "description": "Support email address"
+    },
+    "SUPPORT_PHONE": {
+      "default": "+1234567890",
+      "type": "string",
+      "description": "Support phone number"
+    },
+    "INCOME_OVERVIEW": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Show income overview in admin dashboard"
+    },
+    "ADMIN_RATIO": {
+      "default": "250",
+      "type": "integer",
+      "description": "Points per $1 USD for admin (profit calculation)"
+    },
+    "USER_RATIO": {
+      "default": "1000",
+      "type": "integer",
+      "description": "Points per $1 USD for users"
+    },
+    "TRANSACTION_PREFIX": {
+      "default": "PCKT",
+      "type": "string",
+      "description": "Transaction ID prefix"
+    },
+    "TRANSACTION_CREDIT_PREFIX": {
+      "default": "CR",
+      "type": "string",
+      "description": "Credit transaction prefix"
+    },
+    "TRANSACTION_DEBIT_PREFIX": {
+      "default": "DB",
+      "type": "string",
+      "description": "Debit transaction prefix"
+    },
+    "SMTP_EMAIL": {
+      "default": "",
+      "type": "string",
+      "description": "SMTP sender email address"
+    },
+    "SMTP_HOST": {
+      "default": "smtp.gmail.com",
+      "type": "string",
+      "description": "SMTP server host"
+    },
+    "SMTP_SECURE": {
+      "default": "TLS",
+      "type": "string",
+      "description": "SMTP encryption (TLS/SSL)"
+    },
+    "SMTP_PORT": {
+      "default": "587",
+      "type": "integer",
+      "description": "SMTP port"
+    },
+    "SMTP_AUTH": {
+      "default": "1",
+      "type": "boolean",
+      "description": "SMTP authentication enabled"
+    },
+    "SMTP_USERNAME": {
+      "default": "",
+      "type": "string",
+      "description": "SMTP username"
+    },
+    "SMTP_PASSWORD": {
+      "default": "",
+      "type": "string",
+      "description": "SMTP password"
+    },
+    "FIREBASE_API_KEY": {
+      "default": "",
+      "type": "string",
+      "description": "Firebase Cloud Messaging API key"
+    },
+    "OAOD_CHECK": {
+      "default": "0",
+      "type": "boolean",
+      "description": "One account one device check"
+    },
+    "SITE_FAVICON": {
+      "default": "favicon.png",
+      "type": "string",
+      "description": "Favicon image filename"
+    },
+    "SITE_LOGO_DARK": {
+      "default": "logo-dark.png",
+      "type": "string",
+      "description": "Dark mode logo filename"
+    },
+    "SITE_LOGO_LIGHT": {
+      "default": "logo-light.png",
+      "type": "string",
+      "description": "Light mode logo filename"
+    },
+    "NOTICE_REDEEM": {
+      "default": "Payouts are processed within 24-48 hours.",
+      "type": "string",
+      "description": "Notice text on redeem page"
+    },
+    "NOTICE_REFER_AND_EARN": {
+      "default": "Self referring is not permitted.",
+      "type": "string",
+      "description": "Notice text on refer page"
+    },
+    "NOTICE_TRANSACTIONS": {
+      "default": "Showing all credits and debits on your account.",
+      "type": "string",
+      "description": "Notice text on transactions page"
+    },
+    "NOTICE_ADBLOCK_TITLE": {
+      "default": "AdBlock Detected",
+      "type": "string",
+      "description": "AdBlock warning title"
+    },
+    "NOTICE_ADBLOCK": {
+      "default": "Please disable your adblocker to continue.",
+      "type": "string",
+      "description": "AdBlock warning text"
+    },
+    "WEB_SHOW_RECENT_PAYOUTS": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Show recent payouts on dashboard"
+    },
+    "WEB_SHOW_NEW_FEATURE_NOTICE": {
+      "default": "0",
+      "type": "boolean",
+      "description": "Show new feature notice"
+    },
+    "WEB_SHOW_ANNOUNCEMENT": {
+      "default": "0",
+      "type": "boolean",
+      "description": "Show announcement bar"
+    },
+    "WEB_ANNOUNCEMENT_TEXT": {
+      "default": "",
+      "type": "string",
+      "description": "Announcement text"
+    },
+    "GOOGLE_LOGIN_WEB": {
+      "default": "0",
+      "type": "boolean",
+      "description": "Google login enabled for web"
+    },
+    "GOOGLE_CLIENT_ID": {
+      "default": "",
+      "type": "string",
+      "description": "Google OAuth client ID"
+    },
+    "GOOGLE_SECRET_ID": {
+      "default": "",
+      "type": "string",
+      "description": "Google OAuth client secret"
+    },
+    "FACEBOOK_LOGIN_WEB": {
+      "default": "0",
+      "type": "boolean",
+      "description": "Facebook login enabled for web"
+    },
+    "FACEBOOK_APP_ID": {
+      "default": "",
+      "type": "string",
+      "description": "Facebook app ID"
+    },
+    "FACEBOOK_SECRET_ID": {
+      "default": "",
+      "type": "string",
+      "description": "Facebook app secret"
+    },
+    "ADBLOCK_WEB": {
+      "default": "0",
+      "type": "boolean",
+      "description": "AdBlock detection enabled"
+    },
+    "PACKAGE_NAME": {
+      "default": "com.example.flycash",
+      "type": "string",
+      "description": "Android app package name"
+    },
+    "DAILY_ACTIVE": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Daily check-in feature enabled"
+    },
+    "DAILY_REWARD": {
+      "default": "10",
+      "type": "integer",
+      "description": "Daily check-in reward points"
+    },
+    "CHECKIN_BONUS_TITLE": {
+      "default": "Daily Check-in Bonus",
+      "type": "string",
+      "description": "Tracker type label for check-in"
+    },
+    "REFER_REWARD": {
+      "default": "50",
+      "type": "integer",
+      "description": "Referral reward points for both parties"
+    },
+    "REFERAL_BONUS_TITLE": {
+      "default": "Referral Signup Bonus",
+      "type": "string",
+      "description": "Tracker type for referred user bonus"
+    },
+    "REFERER_BONUS_TITLE": {
+      "default": "Referral Bonus",
+      "type": "string",
+      "description": "Tracker type for referrer bonus"
+    },
+    "ACCESS_TOKEN": {
+      "default": "",
+      "type": "string",
+      "description": "License/access token (aym.com validation)"
+    },
+    "INSTALL": {
+      "default": "0",
+      "type": "boolean",
+      "description": "Installation status flag"
+    },
+    "API_OFFERS_ACTIVE": {
+      "default": "0",
+      "type": "boolean",
+      "description": "API offers feature enabled"
+    },
+    "AdMantum_PubId": {
+      "default": "",
+      "type": "string",
+      "description": "AdMantum publisher ID"
+    },
+    "AdMantum_AppId": {
+      "default": "",
+      "type": "string",
+      "description": "AdMantum app ID"
+    },
+    "AdMantum_SecretKey": {
+      "default": "",
+      "type": "string",
+      "description": "AdMantum secret key"
+    },
+    "AdGate_Media_WallId": {
+      "default": "",
+      "type": "string",
+      "description": "AdGate Media wall ID"
+    },
+    "Fyber_AppId": {
+      "default": "",
+      "type": "string",
+      "description": "Fyber app ID"
+    },
+    "Fyber_SecurityToken": {
+      "default": "",
+      "type": "string",
+      "description": "Fyber security token"
+    },
+    "AdScendMedia_PubId": {
+      "default": "",
+      "type": "string",
+      "description": "AdScend Media publisher ID"
+    },
+    "AdScendMedia_AdwallId": {
+      "default": "",
+      "type": "string",
+      "description": "AdScend Media adwall ID"
+    },
+    "SPIN_REWARD": {
+      "default": "1-100",
+      "type": "string",
+      "description": "Spin wheel reward range (used in API)"
+    },
+    "SPIN_ACTIVE": {
+      "default": "1",
+      "type": "boolean",
+      "description": "Spin wheel feature enabled"
+    }
+  }
+}

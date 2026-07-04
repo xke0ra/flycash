@@ -1,0 +1,18 @@
+# HTTPS Redirect (6.2)
+<IfModule mod_rewrite.c>
+   
+</IfModule>
+
+# Security Headers (6.5)
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header always set X-Permitted-Cross-Domain-Policies "none"
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "\.(sql|log|inc\.php|md)$">
+    Require all denied
+</FilesMatch>

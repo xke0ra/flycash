@@ -1,0 +1,9 @@
+# Protect config.php and sensitive includes
+<FilesMatch "\.(inc\.php|sql)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config\.php$ - [F,L]
+</IfModule>

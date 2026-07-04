@@ -1,0 +1,43 @@
+body {
+    color: #525252;
+    font-size: 16px;
+    margin: 0;
+}
+
+.notice-content{
+    text-align: center;
+    font-size: 56px;
+    font-weight: 200;
+    margin: 100px 0;
+}
+
+.notice-title{
+    font-size: 56px;
+    font-weight: 200;
+}
+
+.notice-subtitle{
+    font-size: 20px;
+    margin-bottom: 10%;
+    line-height: 1.5;
+}
+
+.link-button{
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    text-transform:uppercase;
+    color: #fff;
+    background: #1880c9;
+    transition: all 0.3s;
+}
+
+.notice-footer{
+    font-size: 14px;
+    margin-top: 8%;
+}
+
+.footer-link{
+    text-decoration: none;
+    color: inherit;
+}

@@ -1,0 +1,246 @@
+﻿body {
+    background-image: url(https://egcash.online/assets/images/banner.png);
+    background-position: center top;
+    background-size: 100% 680px;
+}
+
+.footer{
+    background-image: url('https://egcash.online/assets/images/banner.png');
+}
+
+.signup-sucess-msg{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    
+}
+
+.form-bootom-text{
+    text-align: center; font-size: 1rem; font-weight: 500;
+}
+
+.login-aside{
+    background-image: url(https://egcash.online/assets/images/banner.png);
+}
+
+.center{
+    text-align: center;
+}
+
+.refer-text{
+    color: #74788d;
+    font-size: 1.1rem;
+}
+
+.refer-url{
+    margin-top: 3rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.mb-7{
+    margin-bottom: 7rem;
+}
+
+.topbar-username{
+    min-width: fit-content;
+}
+
+.topbar-icon{
+    min-width: 40px;
+}
+
+.user-card{
+    background-image: url(../media/images/header.jpg);
+}
+
+.widget-new-feature{
+    min-height: 300px;
+    background-image: url(https://www.aym.com/preview/ic_refer_and_earn.png);
+}
+
+.home-chart{
+    height:100px;
+    width: 230px;
+}
+
+.home-chartjs{
+    display: block;
+    height: 115px;
+    width: 230px;
+}
+
+.refer-stats-icon{
+    display: flex;
+    font-size: 3em;
+}
+
+/* v3.6 UPDATE BELOW */
+
+.checkin-timer{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.daily-checkin-taken-title{
+    display: none;
+}
+
+.daily-checkin-try-again{
+    display: none;
+}
+
+.alert-text{
+    font-size: 14px;
+}
+
+.loading_screen{
+    background: #fff;
+    min-height: 400px;
+    padding: 200px 0;
+    text-align: center;
+    width: 100%;
+    z-index: 3;
+}
+
+@media (min-width: 1199px) {
+    .col-xl {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+    .col-xl-auto {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: 100%;
+    }
+    .col-xl-1 {
+        flex: 0 0 8.33333%;
+        max-width: 8.33333%;
+    }
+    .col-xl-2 {
+        flex: 0 0 16.66667%;
+        max-width: 16.66667%;
+    }
+    .col-xl-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+    .col-xl-4 {
+        flex: 0 0 33.33333%;
+        max-width: 33.33333%;
+    }
+    .col-xl-5 {
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+    .col-xl-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .col-xl-7 {
+        flex: 0 0 58.33333%;
+        max-width: 58.33333%;
+    }
+    .col-xl-8 {
+        flex: 0 0 66.66667%;
+        max-width: 66.66667%;
+    }
+    .col-xl-9 {
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+    .col-xl-10 {
+        flex: 0 0 83.33333%;
+        max-width: 83.33333%;
+    }
+    .col-xl-11 {
+        flex: 0 0 91.66667%;
+        max-width: 91.66667%;
+    }
+    .col-xl-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .order-xl-first {
+        order: -1;
+    }
+    .order-xl-last {
+        order: 13;
+    }
+    .order-xl-0 {
+        order: 0;
+    }
+    .order-xl-1 {
+        order: 1;
+    }
+    .order-xl-2 {
+        order: 2;
+    }
+    .order-xl-3 {
+        order: 3;
+    }
+    .order-xl-4 {
+        order: 4;
+    }
+    .order-xl-5 {
+        order: 5;
+    }
+    .order-xl-6 {
+        order: 6;
+    }
+    .order-xl-7 {
+        order: 7;
+    }
+    .order-xl-8 {
+        order: 8;
+    }
+    .order-xl-9 {
+        order: 9;
+    }
+    .order-xl-10 {
+        order: 10;
+    }
+    .order-xl-11 {
+        order: 11;
+    }
+    .order-xl-12 {
+        order: 12;
+    }
+    .offset-xl-0 {
+        margin-left: 0;
+    }
+    .offset-xl-1 {
+        margin-left: 8.33333%;
+    }
+    .offset-xl-2 {
+        margin-left: 16.66667%;
+    }
+    .offset-xl-3 {
+        margin-left: 25%;
+    }
+    .offset-xl-4 {
+        margin-left: 33.33333%;
+    }
+    .offset-xl-5 {
+        margin-left: 41.66667%;
+    }
+    .offset-xl-6 {
+        margin-left: 50%;
+    }
+    .offset-xl-7 {
+        margin-left: 58.33333%;
+    }
+    .offset-xl-8 {
+        margin-left: 66.66667%;
+    }
+    .offset-xl-9 {
+        margin-left: 75%;
+    }
+    .offset-xl-10 {
+        margin-left: 83.33333%;
+    }
+    .offset-xl-11 {
+        margin-left: 91.66667%;
+    }
+}

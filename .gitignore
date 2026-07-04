@@ -1,0 +1,39 @@
+# OS
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# PHP
+*.log
+error_log
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Environment
+.env
+admin/core/config.php
+
+# Dependencies
+vendor/
+node_modules/
+
+# Build assets
+public/assets/build/
+
+# Archives
+*.zip
+*.tar.gz
+
+# Installer (remove after deployment)
+install/
+
+# Temp
+tmp/
+temp/
+
+# Database exports (schema reference is tracked)
+*.sql
+!docs/schema_reference.sql

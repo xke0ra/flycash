@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="40" viewBox="0 0 180 40">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon -->
+  <rect x="0" y="4" width="32" height="32" rx="8" fill="url(#g)"/>
+  <path d="M10 12 L16 12 Q20 12 20 16 Q20 20 16 20 L14 20 L14 28 L10 28 Z" fill="#fff" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M14 17 L18 17 Q20 17 20 19 Q20 21 18 21 L14 21" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Text -->
+  <text x="42" y="26" font-family="Inter,-apple-system,BlinkMacSystemFont,sans-serif" font-size="18" font-weight="800" fill="#0f172a" letter-spacing="-0.5">FLY</text>
+  <text x="82" y="26" font-family="Inter,-apple-system,BlinkMacSystemFont,sans-serif" font-size="18" font-weight="600" fill="#64748b" letter-spacing="-0.3">CASH</text>
+</svg>

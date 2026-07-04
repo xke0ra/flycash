@@ -1,0 +1,14 @@
+https://your-domain.com/dashboard/videos-beta.php
+https://your-domain.com/dashboard/watch-video.php
+https://your-domain.com/dashboard/includes/dashboard_offerwalls.php
+https://your-domain.com/admin/edit-youtube-offer.php
+https://your-domain.com/add-youtube-offer.php
+https://your-domain.com/youtube-offers.php
+https://your-domain.com/admin/proccess/edit-youtube-offer.php
+https://your-domain.com/admin/proccess/add-youtube-offer.php
+https://your-domain.com/admin/proccess/youtube-offer.php
+https://your-domain.com/admin/core/class.offerwalls.inc.php
+https://your-domain.com/admin/inc/navigation.php
+https://your-domain.com/admin/controller/offerwalls-controller.php
+https://your-domain.com/admin/controller/video-reward.php
+
