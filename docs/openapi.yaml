@@ -1,0 +1,466 @@
+openapi: 3.0.3
+info:
+  title: FLY CASH API v4
+  description: |
+    Money Making Script API — used by Android App, Web Dashboard, and Third-party Offerwalls.
+    
+    ## Authentication
+    API v4 uses token-based authentication via `accessToken` (1h TTL) and `refreshToken` (30d TTL).
+    All authenticated endpoints require `accountId` and `accessToken` in the request body.
+
+    ## Client Identification
+    All requests must include `clientId` matching the configured server value.
+  version: "4.0"
+  contact:
+    name: AYM Support
+    url: "http://www.aym.com"
+    email: support@aym.com
+
+servers:
+  - url: https://yourdomain.com/admin/api/v4
+    description: Production server
+  - url: http://localhost/flycash/admin/api/v4
+    description: Local development
+
+components:
+  securitySchemes:
+    AccessTokenAuth:
+      type: apiKey
+      in: query
+      name: accessToken
+      description: |
+        Access token obtained from auth/signin or auth/refresh.
+        Must be sent inside JSON body as `accessToken` parameter.
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          enum: [true]
+        error_code:
+          type: integer
+          description: Application-level error code
+        error_description:
+          type: string
+      required:
+        - error
+        - error_code
+        - error_description
+
+    SigninRequest:
+      type: object
+      properties:
+        clientId:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: johndoe
+        password:
+          type: string
+          example: secret123
+        fcm:
+          type: integer
+          description: FCM registration (0 = web, 1+ = app)
+          default: 0
+      required:
+        - clientId
+        - username
+        - password
+
+    SigninResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: false
+        error_code:
+          type: integer
+          example: 0
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        accountId:
+          type: integer
+        user:
+          type: object
+        configs:
+          type: array
+
+    AccessTokenResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: false
+        error_code:
+          type: integer
+          example: 0
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        accountId:
+          type: integer
+        expiresIn:
+          type: integer
+          description: TTL in seconds
+
+    BalanceResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: false
+        error_code:
+          type: integer
+          example: 0
+        points:
+          type: integer
+          example: 12500
+        balance:
+          type: number
+          format: float
+          description: USD equivalent
+
+    RedeemRequest:
+      type: object
+      properties:
+        clientId:
+          type: integer
+        accountId:
+          type: integer
+        accessToken:
+          type: string
+        payoutId:
+          type: integer
+        pos:
+          type: string
+          description: Wallet/account address for payout
+
+  parameters:
+    ClientIdParam:
+      name: clientId
+      in: query
+      required: true
+      schema:
+        type: integer
+        default: 1
+      description: Android App Client ID
+
+  headers:
+    X-API-Version:
+      schema:
+        type: string
+        example: "4.0"
+      description: API version identifier
+
+paths:
+  /auth/signin:
+    post:
+      summary: User sign-in
+      description: Authenticate user with username + password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SigninRequest"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SigninResponse"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/signup:
+    post:
+      summary: User registration
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: integer
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Account created + tokens
+        "400":
+          description: Validation error
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      description: Exchange a valid refreshToken for new access/refresh token pair
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: integer
+                refreshToken:
+                  type: string
+      responses:
+        "200":
+          description: New tokens issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessTokenResponse"
+
+  /auth/verify:
+    post:
+      summary: Verify account
+      description: Verify user account with email verification code
+      tags:
+        - Authentication
+
+  /account/balance:
+    post:
+      summary: Get user balance
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: integer
+                accountId:
+                  type: integer
+                accessToken:
+                  type: string
+      responses:
+        "200":
+          description: Balance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BalanceResponse"
+
+  /account/profile:
+    post:
+      summary: Get user profile
+      tags:
+        - Account
+
+  /account/checkin:
+    post:
+      summary: Daily check-in bonus
+      tags:
+        - Account
+
+  /account/redeem:
+    post:
+      summary: Submit redeem request
+      tags:
+        - Account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RedeemRequest"
+
+  /account/refer:
+    post:
+      summary: Get referral data
+      tags:
+        - Account
+
+  /account/spin:
+    post:
+      summary: Lucky spin (if enabled)
+      tags:
+        - Account
+
+  /account/transactions:
+    post:
+      summary: Get transaction history
+      tags:
+        - Account
+
+  /account/logout:
+    post:
+      summary: Invalidate access token
+      tags:
+        - Account
+
+  /account/recovery:
+    post:
+      summary: Password recovery
+      tags:
+        - Account
+
+  /offerwalls/index:
+    post:
+      summary: List active offerwalls
+      tags:
+        - Offerwalls
+
+  /offerwalls/payouts:
+    post:
+      summary: List available payouts
+      tags:
+        - Offerwalls
+
+  /offerwalls/status:
+    post:
+      summary: Check offer completion status
+      tags:
+        - Offerwalls
+
+  /offerwalls/youtube:
+    post:
+      summary: Get YouTube offer list
+      tags:
+        - Offerwalls
+
+  /redeem-processor:
+    post:
+      summary: Process redeem request (AJAX)
+      description: |
+        Internal endpoint called by dashboard JS.
+        Requires CSRF token in `csrf_token` field.
+      tags:
+        - Internal
+      parameters:
+        - name: orderId
+          in: formData
+          required: true
+          schema:
+            type: integer
+        - name: pos
+          in: formData
+          required: true
+          schema:
+            type: string
+        - name: csrf_token
+          in: formData
+          required: true
+          schema:
+            type: string
+
+x-postbacks:
+  description: |
+    Offerwall postback callbacks — called by third-party networks to credit users.
+    All postbacks support both direct file access and unified router (/postbacks/index.php).
+
+  adgatemedia:
+    summary: AdGateMedia postback
+    url: /postbacks/adgatemedia.php?tx_id={tx_id}&user_id={s2}&point_value={points}&usd_value={payout}
+    method: GET
+    params:
+      user_id: Username/ID
+      point_value: Points to credit
+      tx_id: Transaction ID (for idempotency)
+
+  adgem:
+    summary: AdGem postback
+    url: /postbacks/adgem.php?user_id={player_id}&amount={amount}
+    method: GET
+    params:
+      user_id: Username
+      amount: Points
+
+  admantum:
+    summary: AdMantum postback
+    url: /postbacks/admantum.php?user_id={uid}&amount={virtual_currency}
+    method: GET
+    params:
+      user_id: User ID or click ID
+      amount: Points
+
+  adscendmedia:
+    summary: AdScendMedia postback
+    url: /postbacks/adscendmedia.php?offerid={OID}&name={ONM}&rate={CUR}&sub1={SB1}
+    method: GET
+    params:
+      sub1: Username
+      rate: Points (< 1000)
+
+  cpalead:
+    summary: CpaLead postback
+    url: /postbacks/cpalead.php?subid={subid}&subid2={subid2}&virtual_currency={virtual_currency}
+    method: GET
+    params:
+      subid2: Username
+      virtual_currency: Points
+
+  kiwiwall:
+    summary: KiwiWall postback
+    url: /postbacks/kiwiwall.php?sub_id={sub_id}&status={status}&amount={amount}
+    method: GET
+    params:
+      sub_id: Username
+      status: 1 = completed
+      amount: Points
+
+  offertoro:
+    summary: OfferToro postback
+    url: /postbacks/offertoro.php?user_id={user_id}&amount={amount}
+    method: GET
+    params:
+      user_id: Username
+      amount: Points
+
+  ogads:
+    summary: OgAds postback
+    url: /postbacks/osa.php?of_id={offer_id}&of_name={offer_name}&amount={payout}&user={aff_sub3}
+    method: GET
+    params:
+      user: Username
+      amount: USD payout (multiplied by 300)
+      of_id: Offer ID
+      of_name: Offer name
+
+  wannads:
+    summary: Wannads postback
+    url: /postbacks/wannads.php?subId={subId}&reward={reward}&status={status}
+    method: GET
+    params:
+      subId: Username
+      reward: Points
+      status: 1 = completed
+
+x-error-codes:
+  0: Success
+  100: Unknown error
+  101: Invalid or expired access token
+  300: Login already taken
+  301: Email already taken
+  302: IP already taken
+  400: Account not found
+  403: Forbidden (IP banned / CSRF)
+  503: Server not configured

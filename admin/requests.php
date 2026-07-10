@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * FLY CASH v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-	 
-	$pagename = 'pending-requests';
+<?php
+$pagename = 'pending-requests';
 	$container = 'redeem-requests';
 	
 	include_once("inc/admin.inc.php");
@@ -45,14 +35,12 @@
                 </thead>
                 <tbody>
                 <?php
-                    $result = $requests->getRequests(0);
+                    $result = $requests->getRequests(0, 0, 0, 'pending');
                     $requests_loaded = count($result['requests']);
                     
                     if ($requests_loaded != 0) {
                         foreach ($result['requests'] as $key => $value) {
-                            if($value['status'] == 0){
-                                draw($value);
-                            }
+                            draw($value);
                         }
                     }
                 ?>

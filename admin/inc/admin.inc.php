@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
-	include_once("core/init.inc.php");
+<?php
+include_once("core/init.inc.php");
 
     if (!admin::isSession()) {
 
@@ -19,7 +9,7 @@
 	$configs = new functions($dbo);
 	$analytics = new analytics($dbo);
     $stats = new stats($dbo);
-    $requests = new requests($dbo);
+    $requests = new redemptions($dbo);
 	
 	$calcPercent = $configs->getConfig('ADMIN_RATIO');
 	$configs->updateConfigs(time(),'LAST_ADMIN_ACCESS');

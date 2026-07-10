@@ -77,9 +77,7 @@ function show_offerwall(offerwall) {
     
     document.getElementById("offerwall").innerHTML = '';
     
-    <?php if($enable_loadingScreen){ ?>
     document.getElementById("offerwall").innerHTML = '<div class="loading_screen"><div class="h3"><span class="kt-spinner kt-spinner--v2 kt-spinner--lg <?php echo $loading_spinner; ?>"><span class="ml-5"><?php echo $loading_text; ?></span></span></div></div>';
-    <?php } ?>
     
     document.getElementById("offerwall").innerHTML += '<!-- START:: OFFER WALL --><div class="offerwall_screen" id="offerwall_screen" style="display: none;"></div><!-- END:: OFFER WALL -->';
     document.getElementById("offerwall_screen").innerHTML = "";

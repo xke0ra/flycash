@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	include_once("../admin/core/init.inc.php");
+include_once("../admin/core/init.inc.php");
 
     if (!account::isSession()) {
 
@@ -27,7 +17,5 @@
 	
 	$APP_NAME = $configs->getConfig('APP_NAME');
 	$APP_DESC = $configs->getConfig('APP_DESC');
-	
-	function esc_attr($attr){ return htmlspecialchars($attr, ENT_COMPAT, 'UTF-8'); }
 	
 ?>

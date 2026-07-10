@@ -8,8 +8,12 @@ validateClient($data);
 $authData = authorizeRequest($data, $dbo);
 $username = isset($data['user']) ? helper::clearText($data['user']) : '';
 
-$account = new account($dbo, $authData['accountId']);
-$userdata = $account->get();
+$profileService = \FlyCash\Container::get(\FlyCash\Services\ProfileService::class);
+$userdata = $profileService->get($authData['accountId']);
+
+if ($userdata === null) {
+    jsonError(ERROR_UNKNOWN, "Account not found", 404);
+}
 
 if (!empty($username) && $userdata['username'] !== $username) {
     jsonError(ERROR_UNKNOWN, "Account Mismatch", 403);
@@ -24,5 +28,5 @@ jsonResponse(array(
     "accessToken" => $authData['accessToken'],
     "accountId" => $authData['accountId'],
     "account" => array($userdata),
-    "config" => array($account->getConfigs($fcm))
+    "config" => array($profileService->getConfigs($authData['accountId'], $fcm))
 ), 200);

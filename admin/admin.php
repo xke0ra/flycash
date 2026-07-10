@@ -1,23 +1,11 @@
-﻿<?php
-
-    /*!
-	 * FLY CASH v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-
-	$pagename = 'dashboard';
+<?php
+$pagename = 'dashboard';
 	$container = '';
 	
 	include_once("inc/admin.inc.php");
 	
     include_once 'inc/admin_header.php';
 ?>
-
 
 <div class="admin-content">
 

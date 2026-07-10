@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'profile';
+$pagename = 'profile';
 	$container = '';
 
     include_once("includes/user.inc.php");
@@ -52,7 +42,7 @@
                 <!-- Sidebar -->
                 <div class="sidebar-card">
                     <div class="sidebar-card-header">
-                        <div class="avatar"><?php echo esc_attr(strtoupper($req_user_info['fullname'][0])); ?></div>
+                        <div class="avatar"><?php echo esc_attr(!empty($req_user_info['fullname']) ? strtoupper($req_user_info['fullname'][0]) : '?'); ?></div>
                         <h4><?php echo esc_attr($req_user_info['fullname']); ?></h4>
                         <p>Member Since <?php echo esc_attr(date('d M, Y', $req_user_info['regtime'])); ?></p>
                     </div>
@@ -79,7 +69,7 @@
                 <!-- Main Content -->
                 <div class="card-modern">
                     <div class="card-modern-header">
-                        <h3>Account Information <small>update your personal informaiton</small></h3>
+                        <h3>Account Information <small>update your personal information</small></h3>
                     </div>
                     <form method="post" action="">
                         <div class="card-modern-body">

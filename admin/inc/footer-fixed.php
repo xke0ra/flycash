@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 ?>
 <!--Footer Fixed-->
         <div class="footer" style="background-color: #fff; bottom: 0; left: 0; align-items: center; display: flex; justify-content: space-between; width: 100%; border-top: 1px solid var(--light-color);">

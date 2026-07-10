@@ -1,0 +1,104 @@
+parameters:
+    level: 6
+    paths:
+        - src/
+        - admin/core/
+        - admin/controller/
+        - admin/process/
+        - admin/api/
+        - dashboard/
+        - postbacks/
+        - refer/
+    excludePaths:
+        - vendor/
+        - install/
+        - node_modules/
+        - docs/
+        - admin/core/libraries/
+        - admin/core/class.PHPMailer.inc.php
+        - admin/core/class.SMTP.inc.php
+        - admin/core/class.POP3.inc.php
+        - admin/core/class.imagehelper.php
+        - admin/controller/Mobile_Detect.php
+        - dashboard/assets/
+        - tools/css-audit-test.php
+    ignoreErrors:
+        # Runtime constants defined in init.inc.php
+        - '/Constant DB_HOST/'
+        - '/Constant DB_NAME/'
+        - '/Constant DB_USER/'
+        - '/Constant DB_PASS/'
+        - '/Constant CLIENT_ID/'
+        - '/Constant ERROR_/'
+        - '/Constant ACCOUNT_STATE_/'
+        # V3/V4 API endpoints use variables from include context
+        - '/Variable \$dbo might not be defined/'
+        - '/Variable \$method might not be defined/'
+        - '/Variable \$data might not be defined/'
+        - '/Variable \$api might not be defined/'
+        - '/Variable \$configs might not be defined/'
+        - '/Variable \$helper might not be defined/'
+        - '/Variable \$req_user_info might not be defined/'
+        - '/Variable \$user_fullname might not be defined/'
+        - '/Variable \$user_image might not be defined/'
+        - '/Variable \$B might not be defined/'
+        - '/Variable \$numFunc might not be defined/'
+        # Dashboard include / page context variables
+        - '/Variable \$error might not be defined/'
+        - '/Variable \$error_message might not be defined/'
+        - '/Variable \$success might not be defined/'
+        - '/Variable \$success_message might not be defined/'
+        - '/Variable \$email might not be defined/'
+        - '/Variable \$fullname might not be defined/'
+        - '/Variable \$username might not be defined/'
+        - '/Variable \$confirm_email might not be defined/'
+        - '/Variable \$referer might not be defined/'
+        - '/Variable \$pagename might not be defined/'
+        - '/Variable \$APP_NAME might not be defined/'
+        - '/Variable \$APP_DESC might not be defined/'
+        - '/Variable \$referReward might not be defined/'
+        - '/Variable \$userCurrentPoints might not be defined/'
+        - '/Variable \$userTotalPoints might not be defined/'
+        - '/Variable \$userRedeemedPoints might not be defined/'
+        - '/Variable \$userreferredMembers might not be defined/'
+        - '/Variable \$userIncomeFromReferredMembers might not be defined/'
+        - '/Variable \$user_username might not be defined/'
+        # API files use relative includes that resolve at runtime
+        - '/Path in include_once\(\)/'
+        # Controllers: Hybridauth / PHPMailer classes excluded from scan
+
+        - '/Access to constant ENCRYPTION_STARTTLS/'
+        - '/Call to (static )?method .* on an unknown class (PHPMailer|Hybridauth)/'
+        - '/Caught class Hybridauth/'
+        - '/Access to property \$.* on an unknown class (PHPMailer|Hybridauth)/'
+        - '/Instantiated class (PHPMailer|Hybridauth)/'
+        - '/Instantiated class Mobile_Detect not found/'
+        - '/Access to constant DETECTION_TYPE_EXTENDED/'
+        - '/Call to method setDetectionType.* on an unknown class/'
+        # Controller detect.php
+        - '/Static property Detect::/'
+        - '/Unreachable statement/'
+        - '/Offset .* in isset\(\) always exists/'
+        - '/Array has \d+ duplicate keys/'
+        - '/Deprecated in PHP 8.0: Required parameter .* follows optional/'
+        # PHPMailer-related argument types
+        - '/Parameter \#3 \$value of function curl_setopt expects bool/'
+        - '/Parameter \#1 \$string of function str_pad expects string/'
+
+        # admin/process files use constants from init.inc.php
+        - '/Constant APP_DEMO not found/'
+        # admin/process/ add-points / settings reference excluded library Imagehelper
+        - '/Instantiated class Imagehelper\\Image not found/'
+        - '/Call to method .* on an unknown class Imagehelper\\Image/'
+        - '/Access to offset .* on an unknown class Imagehelper\\Image/'
+        # Dashboard stub index.php files have UTF-8 BOM
+        - '/File begins with UTF-8 BOM character/'
+
+        # Missing type declarations in legacy code
+        - '/Method .* has no return type specified/'
+        - '/Method .* has parameter .* with no type specified/'
+        - '/Function .* has no return type specified/'
+        - '/Function .* has parameter .* with no type specified/'
+        - '/Property .* has no type specified/'
+        - '/Property .* is never read, only written/'
+

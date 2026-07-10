@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 include_once("../api.inc.php");
 
 if (!empty($_POST)) {
@@ -44,7 +34,6 @@ if (!empty($_POST)) {
 
     $result = array("error" => false,
                     "error_code" => ERROR_SUCCESS);
-
 
     echo json_encode($result);
     exit;

@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-    
-    $rel = dirname(__FILE__);
+$rel = dirname(__FILE__);
     include_once($rel."/../admin/core/init.inc.php");
     include_once($rel."/includes/user.inc.php");
     $offerwalls = new offerwalls($dbo);
@@ -17,7 +7,6 @@
     $pagename = "videos";
     include_once $rel.'/includes/dashboard_header.php';
 ?>
-
 
 <div class="page-header">
     <div>
@@ -35,7 +24,7 @@
                 if ($offerwalls_loaded != 0) {
                     foreach ($result['youtubeoffers'] as $key => $value) { ?>
                         <div class="offers-item" style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);">
-                            <img src="../admin/images/<?php echo $value['offer_thumbnail']; ?>" alt="" style="width:64px;height:64px;border-radius:8px;object-fit:cover;">
+                            <img src="../admin/images/<?php echo $value['offer_thumbnail']; ?>" alt="" loading="lazy" style="width:64px;height:64px;border-radius:8px;object-fit:cover;">
                             <div style="flex:1;">
                                 <h4 style="margin:0 0 4px;"><?php echo $value['offer_title']; ?></h4>
                                 <p style="margin:0;color:var(--muted);font-size:14px;"><?php echo $value['offer_subtitle']; ?></p>
@@ -52,6 +41,5 @@
         </div>
     </div>
 </div>
-
 
 <?php include_once $rel.'/includes/dashboard_footer.php'; ?>

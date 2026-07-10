@@ -1,15 +1,5 @@
 ﻿<?php
 
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-     // Install Handler
 	if (!file_exists('../admin')) {
 	    include_once("includes/notice-admin-not-installed.php");
 		exit;
@@ -24,7 +14,7 @@
 
     // User Points
 	$userCurrentPoints = $req_user_info['points'];
-	$userRedeemedPoints = $configs->getUserRedeemedPoints($req_user_info['login']);
+	$userRedeemedPoints = $configs->getUserRedeemedPoints($req_user_info['id']);
 	$userTotalPoints = $userCurrentPoints+$userRedeemedPoints;
 
 	// User's Referred Members

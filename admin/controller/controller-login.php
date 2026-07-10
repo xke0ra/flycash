@@ -18,8 +18,6 @@
 	$APP_NAME = $configs->getConfig('APP_NAME');
 	$APP_DESC = $configs->getConfig('APP_DESC');
 	
-	function esc_attr($attr){ return htmlspecialchars($attr, ENT_COMPAT, 'UTF-8'); }
-
     if (!empty($_POST)) {
 
         $user_username = isset($_POST['user_username']) ? $_POST['user_username'] : '';
@@ -27,12 +25,10 @@
         $token = isset($_POST['authenticity_token']) ? $_POST['authenticity_token'] : '';
 
         $user_username = helper::clearText($user_username);
-        $user_password = helper::clearText($user_password);
-
         $user_username = helper::escapeText($user_username);
-        $user_password = helper::escapeText($user_password);
+        $user_password = trim($user_password);
 
-        if (helper::getAuthenticityToken() !== $token) {
+        if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
             $error = true;
             $error_message = 'Some Error, Try Again';
@@ -48,9 +44,8 @@
 
             $access_data = array();
             
-            $user = new account($dbo);
-            
-            $access_data = $user->signin($user_username, $user_password);
+            $loginController = new \FlyCash\Controller\LoginController($dbo);
+            $access_data = $loginController->login($user_username, $user_password, 0);
 
             if ($access_data['error'] === false){
 
@@ -65,7 +60,7 @@
             } else {
                 $configs->logFailedAttempt($user_username);
                 $error = true;
-                $error_message = 'Incorrect login or password.';
+                $error_message = $access_data['error_description'];
             }
         }
     }

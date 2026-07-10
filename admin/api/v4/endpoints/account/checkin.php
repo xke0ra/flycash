@@ -17,9 +17,10 @@ if (!empty($username) && $userdata['username'] !== $username) {
 
 $checkinReward = $api->getConfig('DAILY_REWARD');
 $checkinBonusTitle = $api->getConfig('CHECKIN_BONUS_TITLE');
+$accountId = $authData['accountId'];
 
-$stmt = $dbo->prepare("SELECT * FROM tracker WHERE username = :user AND type = :title ORDER BY id DESC LIMIT 1");
-$stmt->execute(array(':user' => $userdata['username'], ':title' => $checkinBonusTitle));
+$stmt = $dbo->prepare("SELECT * FROM tracker WHERE user_id = :uid AND type = :title ORDER BY id DESC LIMIT 1");
+$stmt->execute(array(':uid' => $accountId, ':title' => $checkinBonusTitle));
 
 $rewardUser = true;
 if ($stmt->rowCount() > 0) {

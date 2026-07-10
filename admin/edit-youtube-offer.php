@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'edit-youtube-offer';
+<?php
+$pagename = 'edit-youtube-offer';
 	$container = 'youtube-offers';
 	
 	include_once("inc/admin.inc.php");
@@ -79,7 +69,6 @@ include_once 'inc/admin_header.php';
                                     </div>
                                 </div>
 
-
 	                                <div class="form-group">
                                     <div class="form-row">
                                         <label class="col-md-3">Duration In Minutes</label>
@@ -121,7 +110,6 @@ include_once 'inc/admin_header.php';
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <hr />
 

@@ -10,8 +10,13 @@ validateClient($data);
 $username = helper::clearText($data['username']);
 $username = helper::escapeText($username);
 
-$password = helper::clearText($data['password']);
-$password = helper::escapeText($password);
+$password = isset($data['password']) ? trim($data['password']) : '';
+
+// Rate limiting
+$ip = helper::ip_addr();
+if (!$api->checkRateLimit($ip, 'api_login', 5, 60)) {
+    jsonError(ERROR_UNKNOWN, "Too many attempts. Please try again later.", 429);
+}
 
 $account = new account($dbo);
 $access_data = $account->signin($username, $password);
@@ -26,6 +31,8 @@ if ($access_data["error"] === false) {
         $access_data['config'] = array($account->getConfigs());
         jsonResponse($access_data, 200);
     }
+} else {
+    $api->logFailedAttempt($username);
 }
 
 jsonResponse($access_data, 401);

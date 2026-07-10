@@ -1,16 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.6
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-	 
-	 
-	include_once("../core/init.inc.php");
+<?php
+include_once("../core/init.inc.php");
 	
 	// Default Result
 	$result = array('error' => true, 'error_code' => 101, 'error_description' => "Invalid Client Id");
@@ -36,7 +25,6 @@
         $timeCurrent = time();
         $checkinReward = $result['offer_points'];
         $checkinBonusTitle = "Youtube Video Reward";
-
 
         
         $rewardUser = false;
@@ -67,41 +55,33 @@
             
         }
         
-        if($rewardUser){
+        $newBalance = $userdata['points'] + $checkinReward;
+        
+        // Updating user Points
+        $sql = "UPDATE users SET points = :newBalance WHERE id = :id";
+        $stmt = $dbo->prepare($sql);
+        $stmt->execute(array(':newBalance' => $newBalance, ':id' => $accountId));
+        
+        // Updating user Tracker
+        $sql = "INSERT INTO tracker(user_id, username, points, type, date) values (:uid, :user, :checkinReward, :checkinBonusTitle, :timeCurrent)";
+        $stmt = $dbo->prepare($sql);
+        
+        if($stmt->execute(array(':uid' => $accountId, ':user' => $user, ':checkinReward' => $checkinReward, ':checkinBonusTitle' => $checkinBonusTitle, ':timeCurrent' => $timeCurrent))){
             
-            $newBalance = $userdata['points'] + $checkinReward;
-            
-            // Updating user Points
-            $sql = "UPDATE users SET points = :newBalance WHERE login = :user";
-            $stmt = $dbo->prepare($sql);
-            $stmt->execute(array(':newBalance' => $newBalance, ':user' => $user));
-            
-            // Updating user Tracker
-            $sql = "INSERT INTO tracker(username, points, type, date) values (:user, :checkinReward, :checkinBonusTitle, :timeCurrent)";
-            $stmt = $dbo->prepare($sql);
-            
-            if($stmt->execute(array(':user' => $user, ':checkinReward' => $checkinReward, ':checkinBonusTitle' => $checkinBonusTitle, ':timeCurrent' => $timeCurrent))){
-                
-                $notif2 = new notifications($dbo);
-                $notif2->add($user, 'Video Reward', 'You earned '.$checkinReward.' points from watching a video', $checkinReward);
-                $notify->sendPush($userdata['gcm'], "credit", $checkinReward, "none", "none");
-            
-            $sql = "INSERT INTO watched_video(user_id, video_id) values (:accountId, :ID)";
-            $stmt = $dbo->prepare($sql);
-            $stmt->execute(array(':accountId' => $accountId, ':ID' => $ID));
+            $notif2 = new notifications($dbo);
+            $notif2->add($accountId, 'Video Reward', 'You earned '.$checkinReward.' points from watching a video', $checkinReward);
+            $notify->sendPush($userdata['gcm'], "credit", $checkinReward, "none", "none");
+        
+        $sql = "INSERT INTO watched_video(user_id, video_id) values (:accountId, :ID)";
+        $stmt = $dbo->prepare($sql);
+        $stmt->execute(array(':accountId' => $accountId, ':ID' => $ID));
 
-            $result = array('error' => false, 'error_code' => 100, 'error_description' => "Youtube Video Reward Credited Successfully.");
-            
-            echo json_encode($result);
-            exit;
-            
-            }else{ api::printError(404, "Server Error"); }
-            
-        }else{
-            
-            api::printError(410, "Server Error");
-            
-        }
+        $result = array('error' => false, 'error_code' => 100, 'error_description' => "Youtube Video Reward Credited Successfully.");
+        
+        echo json_encode($result);
+        exit;
+        
+        }else{ api::printError(404, "Server Error"); }
         
     }else{
         

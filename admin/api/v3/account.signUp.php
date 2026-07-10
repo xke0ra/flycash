@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 include_once("../api.inc.php");
 
 if (!empty($_POST)) {
@@ -32,8 +22,7 @@ if (!empty($_POST)) {
     $fullname = helper::clearText($fullname);
     $fullname = helper::escapeText($fullname);
 
-    $password = helper::clearText($password);
-    $password = helper::escapeText($password);
+    $password = trim($password);
 
     $email = helper::clearText($email);
     $email = helper::escapeText($email);

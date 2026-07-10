@@ -1,0 +1,14 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg text
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Exclude stale development artifacts from archive exports
+"Watch  & Earn/"    export-ignore

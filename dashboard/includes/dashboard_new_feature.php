@@ -1,14 +1,4 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
 ?>
                                         <div class="kt-portlet kt-widget19">
                                             <div class="kt-portlet__body kt-portlet__body--fit kt-portlet__body--unfill">

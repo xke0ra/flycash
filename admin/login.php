@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-	 
-	include_once("core/init.inc.php");
+<?php
+include_once("core/init.inc.php");
 
     if (admin::isSession()) {
 
@@ -31,12 +21,9 @@
         $twofa_code = isset($_POST['twofa_code']) ? $_POST['twofa_code'] : '';
 
         $user_username = helper::clearText($user_username);
-        $user_password = helper::clearText($user_password);
+        $user_password = trim($user_password);
 
-        $user_username = helper::escapeText($user_username);
-        $user_password = helper::escapeText($user_password);
-
-        if (helper::getAuthenticityToken() !== $token) {
+        if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
             $error = true;
             $error_message = 'Some Error, Try Again';
@@ -225,22 +212,22 @@
         <div class="subtitle">Sign in to your <?php echo htmlspecialchars($configs->getConfig('APP_NAME'), ENT_QUOTES, 'UTF-8'); ?> Dashboard</div>
         
         <?php if ($error){ ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="alert alert-danger" aria-live="polite" role="alert"><?php echo htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8'); ?></div>
         <?php } ?>
         
         <form action="login.php" method="post" novalidate onsubmit="showLoading()">
             <input autocomplete="off" type="hidden" name="authenticity_token" value="<?php echo helper::getAuthenticityToken(); ?>">
             <div class="form-group">
                 <label>Username</label>
-                <input class="form-control" placeholder="Enter your username" maxlength="24" id="user_username" name="user_username" type="text" value="<?php echo htmlspecialchars($user_username, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input class="form-control" placeholder="Enter your username" maxlength="24" id="user_username" name="user_username" type="text" value="<?php echo htmlspecialchars($user_username, ENT_QUOTES, 'UTF-8'); ?>" required aria-label="Username">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input class="form-control" autocomplete="off" placeholder="Enter your password" type="password" id="user_password" maxlength="20" name="user_password" required>
+                <input class="form-control" autocomplete="off" placeholder="Enter your password" type="password" id="user_password" maxlength="20" name="user_password" required aria-label="Password">
             </div>
             <div class="form-group" style="margin-bottom:12px">
                 <label>2FA Code <span style="font-weight:400;color:var(--gray-500)">(if enabled)</span></label>
-                <input class="form-control" autocomplete="off" placeholder="6-digit code" type="text" id="twofa_code" name="twofa_code" maxlength="6" pattern="[0-9]{6}">
+                <input class="form-control" autocomplete="off" placeholder="6-digit code" type="text" id="twofa_code" name="twofa_code" maxlength="6" pattern="[0-9]{6}" aria-label="Two-factor authentication code">
             </div>
             <button type="submit" class="btn">Sign In</button>
         </form>

@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class offers extends db_connect
 {
 
@@ -24,7 +14,7 @@ class offers extends db_connect
                         "error_code" => ERROR_ACCOUNT_ID);
 
         $stmt = $this->db->prepare("SELECT * FROM offer_status WHERE cid = (:id) ORDER BY id DESC LIMIT 1");
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
 

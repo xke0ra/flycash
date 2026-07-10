@@ -13,8 +13,7 @@ $username = helper::escapeText($username);
 $fullname = isset($data['fullname']) ? helper::clearText($data['fullname']) : $username;
 $fullname = helper::escapeText($fullname);
 
-$password = helper::clearText($data['password']);
-$password = helper::escapeText($password);
+$password = isset($data['password']) ? trim($data['password']) : '';
 
 $email = helper::clearText($data['email']);
 $email = helper::escapeText($email);
@@ -27,7 +26,7 @@ $account = new account($dbo);
 $access_data = $account->signup($username, $fullname, $password, $email, $refererCode, $profile_pic, $reg_type);
 
 if ($access_data["error"] === false) {
-    $account->sendVerificationEmail($access_data['accountId']);
+    \FlyCash\Container::get(\FlyCash\Services\EmailVerificationService::class)->sendVerificationEmail($access_data['accountId']);
 
     $auth = new auth($dbo);
     $access_data = $auth->create($access_data['accountId'], CLIENT_ID);

@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class admin extends db_connect
 {
 
@@ -118,7 +108,7 @@ class admin extends db_connect
                         "error_code" => ERROR_UNKNOWN);
 
         $username = helper::clearText($username);
-        $password = helper::clearText($password);
+        $password = trim($password);
 
         $stmt = $this->db->prepare("SELECT id, salt, password, role_id FROM admins WHERE username = (:username) LIMIT 1");
         $stmt->bindParam(":username", $username, PDO::PARAM_STR);
@@ -247,7 +237,7 @@ class admin extends db_connect
 
     static function createAccessToken()
     {
-        $access_token = md5(uniqid(rand(), true));
+        $access_token = bin2hex(random_bytes(32));
 
         if (isset($_SESSION)) {
 

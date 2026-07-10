@@ -21,30 +21,23 @@
         
         $userId = account::getUserID();
         
-        $user = new account($dbo, $userId);
+        $profileService = \FlyCash\Container::get(\FlyCash\Services\ProfileService::class);
         
-        if($req_user_info['email'] === $email){
-            
-            $result = $user->updateAccount($name, $email, $mobile, false);
-            
-        }else{
-            
-            $result = $user->updateAccount($name, $email, $mobile, true);
-            
-        }
+        $needsNewEmail = ($req_user_info['email'] !== $email);
+        $updated = $profileService->updateAccount($userId, $name, $email, $mobile, $needsNewEmail ? $email : '');
         
-        if ($result['error'] === false){
+        if ($updated){
             
             $success = true;
-            $error_message = $result['error_description'];
+            $error_message = "Profile updated successfully.";
             
         	// Get User's latest Data
-        	$req_user_info = $configs->getUserInfo(account::getUserID());
+        	$req_user_info = $profileService->get($userId);
             
         } else {
             
             $error = true;
-            $error_message = $result['error_description'];
+            $error_message = "Profile update failed.";
             
         }
         

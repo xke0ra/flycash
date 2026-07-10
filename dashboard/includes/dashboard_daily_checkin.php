@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-	 
-	 $daily_points = esc_attr($configs->getConfig('DAILY_REWARD'));  // change the points in Admin Panel
+$daily_points = esc_attr($configs->getConfig('DAILY_REWARD'));  // change the points in Admin Panel
 	 
 	 /*
 	 *
@@ -41,7 +31,7 @@
 	 *
 	 */
 	 
-	 $timeLeftForDailyCheckin = $configs->getDailyCheckinTimeLeft($req_user_info['login']);
+	 $timeLeftForDailyCheckin = $configs->getDailyCheckinTimeLeft($req_user_info['id']);
 	 
 	  
 ?>

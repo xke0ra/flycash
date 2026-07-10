@@ -1,14 +1,4 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
 ?>
 	    
 	    <!-- Favicon -->
@@ -19,3 +9,4 @@
 		<title><?php echo $APP_NAME; ?> | <?php echo $APP_DESC; ?></title>
 		<meta name="description" content="<?php echo $APP_DESC; ?>">
 		<meta name="theme-color" content="#6366f1">
+		<meta name="csrf-token" content="<?php echo helper::getAuthenticityToken(); ?>">

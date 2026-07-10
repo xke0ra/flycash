@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class helper extends db_connect
 {
 
@@ -134,11 +124,9 @@ class helper extends db_connect
         return $text;
     }
 
-    static  function escapeText($text)
+    static function escapeText($text)
     {
-        $text = helper::clearText($text);
-        $text = addslashes($text);
-        return $text;
+        return helper::clearText($text);
     }
 
     static function clearInt($value)
@@ -179,7 +167,7 @@ class helper extends db_connect
 
         for ($i = 0; $i < $n; $i++) {
 
-            $key .= $pattern[rand(0, $counter)];
+            $key .= $pattern[random_int(0, $counter)];
         }
 
         return $key;
@@ -193,7 +181,7 @@ class helper extends db_connect
 
         for ($i = 0; $i < $n; $i++) {
 
-            $key .= $pattern[rand(0, $counter)];
+            $key .= $pattern[random_int(0, $counter)];
         }
 
         return $key;
@@ -207,7 +195,7 @@ class helper extends db_connect
 
         for ($i=0; $i<$n; $i++) {
 
-            $key .= $pattern[rand(0,$counter)];
+            $key .= $pattern[random_int(0,$counter)];
         }
 
         return $key;
@@ -215,8 +203,7 @@ class helper extends db_connect
 
     static function generateRandomString($length = 6)
     {
-        
-        return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+        return substr(bin2hex(random_bytes($length)), 0, $length);
     
     }
 
@@ -225,14 +212,20 @@ class helper extends db_connect
         return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
     }
 
+    static function esc_attr($attr)
+    {
+        return htmlspecialchars($attr, ENT_COMPAT, 'UTF-8');
+    }
+
     static function newAuthenticityToken()
     {
 
-        $authenticity_token = md5(uniqid(rand(), true));
+        $authenticity_token = bin2hex(random_bytes(32));
 
         if (isset($_SESSION)) {
 
             $_SESSION['authenticity_token'] = $authenticity_token;
+            $_SESSION['csrf_token'] = $authenticity_token;
         }
     }
 
@@ -264,8 +257,10 @@ class helper extends db_connect
         $result = array("error" => true,
                         "error_code" => ERROR_UNKNOWN);
 
-        $stmt = $this->db->prepare("SELECT * FROM restore_data WHERE hash = (:hash) AND removeAt = 0 LIMIT 1");
+        $stmt = $this->db->prepare("SELECT * FROM restore_data WHERE hash = (:hash) AND removeAt = 0 AND (expiresAt = 0 OR expiresAt > :now) LIMIT 1");
         $stmt->bindParam(":hash", $hash, PDO::PARAM_STR);
+        $now = time();
+        $stmt->bindParam(":now", $now, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {

@@ -1,22 +1,17 @@
-﻿<?php
-
-    /*!
-	 * FLY CASH v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'tracker';
+<?php
+$pagename = 'tracker';
 	$container = '';
 	
 	include_once("inc/admin.inc.php");
 	
 	if(!empty($_GET)){
 		$user = isset($_GET['user']) ? $_GET['user'] : '';
-		$completed = new completed($dbo);
+		$userId = 0;
+		if (!empty($user)) {
+		    $stmt = $dbo->prepare("SELECT id FROM users WHERE login = :login LIMIT 1");
+		    $stmt->execute(array(':login' => $user));
+		    $userId = (int)$stmt->fetchColumn();
+		}
 		$tracker = new tracker($dbo);
 	}
 
@@ -61,8 +56,8 @@
                 </thead>
                 <tbody>
                 <?php
-                if(!empty($user)){
-                    $result = $requests->getuserRequests($user);
+                if($userId > 0){
+                    $result = $requests->getuserRequests($userId);
                     $requests_loaded = count($result['requests']);
                     $counter = 1;
                     
@@ -73,7 +68,7 @@
                         }
                     }
                     
-                    $result = $completed->getuserRequests($user);
+                    $result = $requests->getuserRequests($userId, 'completed');
                     $requests_loaded = count($result['requests']);
                     
                     if ($requests_loaded != 0) {
@@ -105,7 +100,7 @@
                 <tbody>
                 <?php
                 if(!empty($user)){
-                    $result = $tracker->getuserTrackerData($user);
+                    $result = $tracker->getuserTrackerData($userId);
                     $trackerdata_loaded = count($result['requests']);
                     $trackercounter = 1;
                     

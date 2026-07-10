@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 include_once("../api.inc.php");
 
 if (!empty($_POST)) {
@@ -57,9 +47,9 @@ if (!empty($_POST)) {
     
     }
     
-    $sql = "SELECT * FROM tracker WHERE username = :user AND type = :checkinBonusTitle ORDER BY id DESC LIMIT 1";
+    $sql = "SELECT * FROM tracker WHERE user_id = :uid AND type = :checkinBonusTitle ORDER BY id DESC LIMIT 1";
     $stmt = $dbo->prepare($sql);
-    $stmt->execute(array(':user' => $user, ':checkinBonusTitle' => $checkinBonusTitle));
+    $stmt->execute(array(':uid' => $accountId, ':checkinBonusTitle' => $checkinBonusTitle));
     
     if ($stmt->rowCount() > 0) {
         

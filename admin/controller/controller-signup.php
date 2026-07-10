@@ -12,8 +12,6 @@
 	$confirm_email = '';
 	$referer = '';
 	
-	function esc_attr($attr){ return htmlspecialchars($attr, ENT_COMPAT, 'UTF-8'); }
-	
 	$_SESSION["refererCode"] = isset($_SESSION["refererCode"]) ? $_SESSION["refererCode"] : '';
 
     $success = false;
@@ -44,16 +42,15 @@
         $email = helper::clearText($email);
         $confirm_email = helper::clearText($confirm_email);
         $referer = helper::clearText($referer);
-        $password = helper::clearText($password);
 
         $username = helper::escapeText($username);
         $fullname = helper::escapeText($fullname);
         $email = helper::escapeText($email);
         $confirm_email = helper::escapeText($confirm_email);
         $referer = helper::escapeText($referer);
-        $password = helper::escapeText($password);
+        $password = trim($password);
 
-        if (helper::getAuthenticityToken() !== $token) {
+        if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
             $error = true;
             $error_message = 'Some Error, Try Again';

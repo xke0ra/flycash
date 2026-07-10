@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'redeem';
+$pagename = 'redeem';
 	$container = '';
 
     include_once("includes/user.inc.php");
@@ -18,6 +8,16 @@
     $payouts = new redeem($dbo);
     $payoutList = $payouts->getPayouts();
     $payoutList = $payoutList['payouts'];
+
+    $hasActivePayouts = false;
+    if (isset($payoutList) && is_array($payoutList)) {
+        foreach ($payoutList as $payout) {
+            if ($payout['payout_status'] === 'Active') {
+                $hasActivePayouts = true;
+                break;
+            }
+        }
+    }
 
 ?><!DOCTYPE html>
 <?php include_once 'includes/vendor_comments.php'; ?>
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="page-actions">
-                <a href="redeem.php" class="btn btn-primary">Redeem</a>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('rewards-grid').scrollIntoView({behavior:'smooth'})">Redeem</button>
             </div>
         </div>
     </div>
@@ -52,13 +52,13 @@
 
             <?php include_once("../admin/controller/notices.php"); ?>
 
-            <div class="redeem-grid">
-                <?php if (isset($payoutList) && is_array($payoutList)) {
+            <div class="redeem-grid" id="rewards-grid">
+                <?php if ($hasActivePayouts) {
                     foreach($payoutList as $payout){
                         if($payout['payout_status'] == "Active"){
                 ?>
                 <div class="redeem-card">
-                    <img class="redeem-card-img" src="../admin/images/<?php echo esc_attr($payout['payout_thumbnail']); ?>" alt="<?php echo esc_attr($payout['payout_title']); ?>">
+                    <img class="redeem-card-img" src="../admin/images/<?php echo esc_attr($payout['payout_thumbnail']); ?>" alt="<?php echo esc_attr($payout['payout_title']); ?>" loading="lazy">
                     <h4><?php echo esc_attr($payout['payout_title']); ?></h4>
                     <div class="subtitle"><?php echo esc_attr($payout['payout_subtitle']); ?></div>
                     <div class="detail-row">
@@ -75,7 +75,14 @@
                     </div>
                     <button type="button" class="btn-redeem" onclick="<?php if($req_user_info['points'] >= $payout['payout_pointsRequired']){ echo "showRedeemAlert('".$payout['payout_id']."', '".$payout['payout_title']."', '".$payout['payout_subtitle']."', '".$payout['payout_message']."')"; }else{ echo 'showNoEnoughPointsAlert()'; } ?>">Redeem</button>
                 </div>
-                <?php } } } ?>
+                <?php } } ?>
+                <?php } else { ?>
+                <div class="notif-empty" style="grid-column:1/-1;padding:48px 16px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--gray-300);margin-bottom:12px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <div style="font-size:15px;color:var(--gray-500);margin-bottom:4px;">No rewards available</div>
+                    <div style="font-size:13px;color:var(--gray-400);">Check back soon for new rewards.</div>
+                </div>
+                <?php } ?>
             </div>
 
         </div>

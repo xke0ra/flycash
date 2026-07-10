@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'add-youtube-offer';
+<?php
+$pagename = 'add-youtube-offer';
 	$container = 'youtube-offers';
 	
 	include_once("inc/admin.inc.php");

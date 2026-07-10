@@ -1,14 +1,4 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
 ?>
                                         <div class="kt-portlet">
                                             <div class="kt-portlet__head">
@@ -23,11 +13,18 @@
                                                     
                                                     <?php 
                                                     
-                                                    $sql = "SELECT * FROM Completed ORDER BY rid DESC LIMIT 5";
+                                                    $sql = "SELECT * FROM redemptions WHERE status = 'completed' ORDER BY id DESC LIMIT 5";
                                                     $result = $dbo->prepare($sql);
                                                     $result->execute();
+                                                    $recentRows = $result->fetchAll(PDO::FETCH_ASSOC);
                                                     
-                                                    while ($recentPayouts = $result->fetch()) {?>
+                                                    if (count($recentRows) === 0) { ?>
+                                                    <div class="notif-empty" style="padding:48px 16px;text-align:center;">
+                                                        <strong>No payouts yet</strong>
+                                                        <p style="margin:8px 0 0;color:var(--gray-400);font-size:13px;">Once you redeem points, completed payouts will appear here.</p>
+                                                    </div>
+                                                    <?php } else {
+                                                        foreach ($recentRows as $recentPayouts) {?>
                                                      
                                                      <div class="kt-widget4__item">
                                                         <div class="kt-widget4__info">
@@ -37,7 +34,7 @@
                                                         <div class="btn btn-sm btn-label-brand btn-bold"><?php echo esc_attr($recentPayouts['req_amount']); ?></div>
                                                     </div>
                                                     
-                                                    <?php } ?>
+                                                    <?php } } ?>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 include_once("../api.inc.php");
 
 if (!empty($_POST)) {
@@ -56,7 +46,7 @@ if (!empty($_POST)) {
     $notify = new functions($dbo);
     $userdata = $account->get();
     $referdata = $account->getreferer($refererCode);
-    $userOldReferData = $account->getOldRefersData($user);
+    $userOldReferData = $account->getOldRefersData($accountId);
     
     $refererCodefromreferData = isset($referdata['refer']) ? $referdata['refer'] : '11';
     
@@ -74,9 +64,9 @@ if (!empty($_POST)) {
         
         // Old Refer checking and updating user status
         $oldrefererCode = $userOldReferData['referer'];
-        $sql = "UPDATE users SET referer = :oldrefererCode, refered = '1' WHERE login = :user";
+        $sql = "UPDATE users SET referer = :oldrefererCode, refered = '1' WHERE id = :id";
         $stmt = $dbo->prepare($sql);
-        $stmt->execute(array(':oldrefererCode' => $oldrefererCode, ':user' => $user));
+        $stmt->execute(array(':oldrefererCode' => $oldrefererCode, ':id' => $accountId));
         
         api::printError(400, "Referral Bonus Received Already");
         
@@ -103,9 +93,9 @@ if (!empty($_POST)) {
         $notify->creditUserPoints($user, $referReward, $referBonusTitle);
         
         // Update referer and refered status
-        $sql = "UPDATE users SET referer = :refererCode, refered = '1' WHERE login = :user";
+        $sql = "UPDATE users SET referer = :refererCode, refered = '1' WHERE id = :id";
         $stmt = $dbo->prepare($sql);
-        $stmt->execute(array(':refererCode' => $refererCode, ':user' => $user));
+        $stmt->execute(array(':refererCode' => $refererCode, ':id' => $accountId));
         
         // Credit referer points
         $notify->creditUserPoints($rererUserName, $referReward, $refererBonusTitle);

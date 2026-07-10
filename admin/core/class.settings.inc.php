@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class settings extends db_connect
 {
     private $requestFrom = 0;
@@ -96,9 +86,9 @@ class settings extends db_connect
     function changepass($acid, $old_pass, $new_pass, $cnf_pass) {
 		
 		$result = 422;
-        $old_password = helper::clearText($old_pass);
-		$new_password = helper::clearText($new_pass);
-		$cnf_password = helper::clearText($cnf_pass);
+        $old_password = trim($old_pass);
+		$new_password = trim($new_pass);
+		$cnf_password = trim($cnf_pass);
 		
 		if($new_password == $cnf_password){
 			

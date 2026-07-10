@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-     * FLY CASH v3.7
-     *
-     * http://www.aym.com
-     * support@aym.com
-     *
-     * Copyright 2020 AYM ( http://www.aym.com )
-     */
-
-    $featured_offerwalls = array();
+$featured_offerwalls = array();
     $not_offerwalls = array("checkin", "spin", "refer", "redeem", "instructions", "transactions", "share", "rate", "about");
 
     if (isset($dbo)) {
@@ -39,7 +29,7 @@
             ?>
                 <div class="offer-horizontal-card" onclick="show_offerwall('<?php echo htmlspecialchars($otype, ENT_QUOTES, 'UTF-8'); ?>')">
                     <?php if ($oimg): ?>
-                        <img src="admin/images/<?php echo htmlspecialchars($oimg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($otitle, ENT_QUOTES, 'UTF-8'); ?>">
+                        <img src="admin/images/<?php echo htmlspecialchars($oimg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($otitle, ENT_QUOTES, 'UTF-8'); ?>" loading="lazy">
                     <?php endif; ?>
                     <h5><?php echo htmlspecialchars($otitle, ENT_QUOTES, 'UTF-8'); ?></h5>
                     <p><?php echo htmlspecialchars($osub, ENT_QUOTES, 'UTF-8'); ?></p>

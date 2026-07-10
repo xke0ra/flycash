@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-	 
-	 include_once("core/init.inc.php");
+<?php
+include_once("core/init.inc.php");
 
 	if (admin::isSession()) {
 
@@ -48,15 +38,13 @@
 
 		$user_username = helper::clearText($user_username);
 		$user_fullname = helper::clearText($user_fullname);
-		$user_password = helper::clearText($user_password);
-		$user_password_repeat = helper::clearText($user_password_repeat);
+		$user_password = trim($user_password);
+		$user_password_repeat = trim($user_password_repeat);
 
 		$user_username = helper::escapeText($user_username);
 		$user_fullname = helper::escapeText($user_fullname);
-		$user_password = helper::escapeText($user_password);
-		$user_password_repeat = helper::escapeText($user_password_repeat);
 
-		if (helper::getAuthenticityToken() !== $token) {
+		if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
 			$error = true;
 			$error_token = true;

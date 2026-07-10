@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 include_once("../api.inc.php");
 
 if (!empty($_POST)) {
@@ -23,12 +13,17 @@ if (!empty($_POST)) {
     $username = helper::clearText($username);
     $username = helper::escapeText($username);
 
-    $password = helper::clearText($password);
-    $password = helper::escapeText($password);
+    $password = trim($password);
 
     if ($clientId != CLIENT_ID) {
 
         api::printError(ERROR_UNKNOWN, "Error client Id.");
+    }
+
+    // Rate limiting
+    $ip = helper::ip_addr();
+    if (!$numFunc->checkRateLimit($ip, 'api_login', 5, 60)) {
+        api::printError(ERROR_UNKNOWN, "Too many attempts. Please try again later.");
     }
 
     $access_data = array();
@@ -52,6 +47,8 @@ if (!empty($_POST)) {
             array_push($access_data['account'], $account->get());
             array_push($access_data['config'], $account->getConfigs());
         }
+    } else {
+        $numFunc->logFailedAttempt($username);
     }
 
     echo json_encode($access_data);

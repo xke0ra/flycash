@@ -10,11 +10,12 @@ $authData = authorizeRequest($data, $dbo);
 
 $refererCode = $data['value'];
 $user = helper::clearText($data['user']);
+$accountId = $authData['accountId'];
 
-$account = new account($dbo, $authData['accountId']);
+$account = new account($dbo, $accountId);
 $userdata = $account->get();
 $referdata = $account->getreferer($refererCode);
-$userOldReferData = $account->getOldRefersData($user);
+$userOldReferData = $account->getOldRefersData($accountId);
 
 $refererCodefromreferData = isset($referdata['refer']) ? $referdata['refer'] : '11';
 $checkusername = isset($userOldReferData['username']) ? $userOldReferData['username'] : "none";
@@ -29,9 +30,9 @@ if ($userdata['refered'] == 1) {
 
 if ($checkusername == $user) {
     $oldrefererCode = $userOldReferData['referer'];
-    $sql = "UPDATE users SET referer = :oldrefererCode, refered = '1' WHERE login = :user";
+    $sql = "UPDATE users SET referer = :oldrefererCode, refered = '1' WHERE id = :id";
     $stmt = $dbo->prepare($sql);
-    $stmt->execute(array(':oldrefererCode' => $oldrefererCode, ':user' => $user));
+    $stmt->execute(array(':oldrefererCode' => $oldrefererCode, ':id' => $accountId));
     jsonError(400, "Referral Bonus Received Already", 400);
 }
 
@@ -47,12 +48,13 @@ $referReward = $api->getConfig('REFER_REWARD');
 $referBonusTitle = $api->getConfig('REFERAL_BONUS_TITLE');
 $refererBonusTitle = $api->getConfig('REFERER_BONUS_TITLE');
 $rererUserName = $referdata['username'];
+$refererUserId = (int)$referdata['id'];
 
 $api->creditUserPoints($user, $referReward, $referBonusTitle);
 
-$sql = "UPDATE users SET referer = :refererCode, refered = '1' WHERE login = :user";
+$sql = "UPDATE users SET referer = :refererCode, refered = '1' WHERE id = :id";
 $stmt = $dbo->prepare($sql);
-$stmt->execute(array(':refererCode' => $refererCode, ':user' => $user));
+$stmt->execute(array(':refererCode' => $refererCode, ':id' => $accountId));
 
 $api->creditUserPoints($rererUserName, $referReward, $refererBonusTitle);
 

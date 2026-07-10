@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-	
-	include_once("../core/init.inc.php");
+<?php
+include_once("../core/init.inc.php");
 
     $configs = new functions($dbo);
 
@@ -22,7 +12,7 @@
 		$ID = isset($_GET['id']) ? $_GET['id'] : "";
 		$type = isset($_GET['type']) ? $_GET['type'] : "";
 		
-		$requests = new requests($dbo);
+		$requests = new redemptions($dbo);
 		
 		if($type === "process"){
 		    
@@ -43,7 +33,7 @@
 		$type = isset($_POST['type']) ? $_POST['type'] : "";
 		$note = isset($_POST['note']) ? $_POST['note'] : "";
 		
-		$requests = new requests($dbo);
+		$requests = new redemptions($dbo);
 		$result = false;
 		
 		if($type === "complete"){

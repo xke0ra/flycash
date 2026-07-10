@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class tracker extends db_connect
 {
 
@@ -97,15 +87,15 @@ class tracker extends db_connect
         return $requests;
     }
 
-    public function getuserTrackerData($username)
+    public function getuserTrackerData($userId)
     {
         
         $requests = array("error" => false,
                         "error_code" => ERROR_SUCCESS,
                         "requests" => array());
 
-        $stmt = $this->db->prepare("SELECT id FROM tracker WHERE username = (:username) ORDER BY id");
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt = $this->db->prepare("SELECT id FROM tracker WHERE user_id = :uid ORDER BY id");
+        $stmt->bindParam(':uid', $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
@@ -122,16 +112,16 @@ class tracker extends db_connect
         return $requests;
     }
 
-    public function getuserTransactionsAPI($username)
+    public function getuserTransactionsAPI($userId)
     {
         
         $userdata = array("error" => false,
                         "error_code" => ERROR_SUCCESS,
-                        "user" => $username,
+                        "user" => $userId,
                         "transactions" => array());
 
-        $stmt = $this->db->prepare("SELECT id FROM tracker WHERE username = (:username) ORDER BY id DESC");
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt = $this->db->prepare("SELECT id FROM tracker WHERE user_id = :uid ORDER BY id DESC");
+        $stmt->bindParam(':uid', $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
@@ -145,29 +135,14 @@ class tracker extends db_connect
             }
         }
 
-        $stmt = $this->db->prepare("SELECT rid FROM Requests WHERE username = (:username) ORDER BY rid DESC");
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt = $this->db->prepare("SELECT id FROM redemptions WHERE user_id = :uid ORDER BY id DESC");
+        $stmt->bindParam(':uid', $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
             while ($row = $stmt->fetch()) {
 
-                $requestInfo = $this->getModifiedRequestsData($row['rid']);
-
-                array_push($userdata['transactions'], $requestInfo);
-
-                unset($requestInfo);
-            }
-        }
-
-        $stmt = $this->db->prepare("SELECT rid FROM Completed WHERE username = (:username) ORDER BY rid DESC");
-        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            while ($row = $stmt->fetch()) {
-
-                $requestInfo = $this->getModifiedCompletedData($row['rid']);
+                $requestInfo = $this->getModifiedRequestsData($row['id']);
 
                 array_push($userdata['transactions'], $requestInfo);
 
@@ -226,7 +201,7 @@ class tracker extends db_connect
         return $result;
     }
 
-    public function getModifiedRequestsData($rid)
+    public function getModifiedRequestsData($id)
     {
         $result = array("error" => true, "error_code" => ERROR_ACCOUNT_ID);
         $config = new functions($this->db);
@@ -234,8 +209,8 @@ class tracker extends db_connect
         $prefix = $config->getConfig('TRANSACTION_PREFIX') . $config->getConfig('TRANSACTION_DEBIT_PREFIX');
         
         
-        $stmt = $this->db->prepare("SELECT * FROM Requests WHERE rid = (:rid) LIMIT 1");
-        $stmt->bindParam(":rid", $rid, PDO::PARAM_INT);
+        $stmt = $this->db->prepare("SELECT * FROM redemptions WHERE id = :id LIMIT 1");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
@@ -243,7 +218,7 @@ class tracker extends db_connect
 
                 $row = $stmt->fetch();
 
-                $result = array("tn_id" => $prefix.$row['rid'],
+                $result = array("tn_id" => $prefix.$row['id'],
                                 "tn_type" => 'db',
                                 "tn_name" => $row['req_amount'] . ' ' . $row['gift_name'],
                                 "tn_points" => $row['points_used'],
@@ -255,32 +230,9 @@ class tracker extends db_connect
         return $result;
     }
 
-    public function getModifiedCompletedData($rid)
+    public function getModifiedCompletedData($id)
     {
-        $result = array("error" => true, "error_code" => ERROR_ACCOUNT_ID);
-        $config = new functions($this->db);
-		
-        $prefix = $config->getConfig('TRANSACTION_PREFIX') . $config->getConfig('TRANSACTION_DEBIT_PREFIX');
-
-        $stmt = $this->db->prepare("SELECT * FROM Completed WHERE rid = (:rid) LIMIT 1");
-        $stmt->bindParam(":rid", $rid, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-
-            if ($stmt->rowCount() > 0) {
-
-                $row = $stmt->fetch();
-
-                $result = array("tn_id" => $prefix.$row['rid'],
-                                "tn_type" => 'db',
-                                "tn_name" => $row['req_amount'] . ' ' . $row['gift_name'],
-                                "tn_points" => $row['points_used'],
-                                "tn_date" => date('d M Y', strtotime($row['date'])),
-                                "tn_status" => $row['status']);
-            }
-        }
-
-        return $result;
+        return $this->getModifiedRequestsData($id);
     }
 	
 

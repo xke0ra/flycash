@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'push-single';
+<?php
+$pagename = 'push-single';
 	$container = 'push';
 	
 	include_once("inc/admin.inc.php");

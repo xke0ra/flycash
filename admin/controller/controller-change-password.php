@@ -7,11 +7,8 @@
 		$new_pass = isset($_POST['new_password']) ? $_POST['new_password'] : '';
         $cnf_pass = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
 
-        $new_pass = helper::clearText($new_pass);
-        $cnf_pass = helper::clearText($cnf_pass);
-        
-        $new_pass = helper::escapeText($new_pass);
-        $cnf_pass = helper::escapeText($cnf_pass);
+        $new_pass = trim($new_pass);
+        $cnf_pass = trim($cnf_pass);
         
 		if($cnf_pass != $new_pass){
 		    

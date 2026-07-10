@@ -124,10 +124,12 @@ CREATE TABLE payouts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------------------------------------
--- 8. Requests (user payout requests)
+-- 8. Redemptions (unified payout requests, replaces legacy Requests + Completed)
+-- Added by: db/migrations/20260705000002_unify_requests_completed.php
 -- -------------------------------------------------------
-CREATE TABLE Requests (
-    rid           INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE redemptions (
+    id            INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id       INT(11) UNSIGNED DEFAULT NULL,
     request_from  VARCHAR(128) NOT NULL DEFAULT '',
     dev_name      VARCHAR(128) DEFAULT NULL,
     dev_man       VARCHAR(128) DEFAULT NULL,
@@ -135,28 +137,15 @@ CREATE TABLE Requests (
     req_amount    DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     points_used   INT(11) NOT NULL DEFAULT 0,
     date          INT(10) UNSIGNED NOT NULL DEFAULT 0,
-    status        TINYINT(1) NOT NULL DEFAULT 0,    -- 0=pending, 1=completed, 2=cancelled
+    status        ENUM('pending','processing','completed','rejected','cancelled') NOT NULL DEFAULT 'pending',
     username      VARCHAR(64) NOT NULL DEFAULT '',
-    INDEX idx_username (username),
-    INDEX idx_status (status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- -------------------------------------------------------
--- 9. Completed (competed payout requests)
--- -------------------------------------------------------
-CREATE TABLE Completed (
-    rid           INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    request_from  VARCHAR(128) NOT NULL DEFAULT '',
-    dev_name      VARCHAR(128) DEFAULT NULL,
-    dev_man       VARCHAR(128) DEFAULT NULL,
-    gift_name     VARCHAR(128) NOT NULL DEFAULT '',
-    req_amount    DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    points_used   INT(11) NOT NULL DEFAULT 0,
-    date          INT(10) UNSIGNED NOT NULL DEFAULT 0,
-    status        TINYINT(1) NOT NULL DEFAULT 1,
-    username      VARCHAR(64) NOT NULL DEFAULT '',
-    INDEX idx_username (username),
-    INDEX idx_status (status)
+    note          TEXT DEFAULT NULL,
+    created_at    INT(10) UNSIGNED NOT NULL DEFAULT 0,
+    updated_at    INT(10) UNSIGNED NOT NULL DEFAULT 0,
+    INDEX idx_user_id (user_id),
+    INDEX idx_status (status),
+    INDEX idx_user_status (user_id, status),
+    CONSTRAINT fk_redemptions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------------------------------------
@@ -347,6 +336,24 @@ CREATE TABLE youtube (
 
 -- -------------------------------------------------------
 -- 23. Watched Video (Watch & Earn addon)
+-- -------------------------------------------------------
+-- Table: postback_log
+-- Purpose: Idempotency and audit log for all offerwall postbacks
+-- Added: Phase 6 — API & Postback Hardening
+-- -------------------------------------------------------
+CREATE TABLE postback_log (
+    id              INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    provider        VARCHAR(64) NOT NULL DEFAULT '',
+    transaction_id  VARCHAR(255) NOT NULL DEFAULT '',
+    user_id         VARCHAR(128) NOT NULL DEFAULT '',
+    amount          INT(11) NOT NULL DEFAULT 0,
+    status          ENUM('pending','success','failed','skipped') NOT NULL DEFAULT 'success',
+    ip_addr         VARCHAR(45) NOT NULL DEFAULT '',
+    created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_tx (transaction_id(64)),
+    UNIQUE INDEX uq_provider_tx (provider, transaction_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- -------------------------------------------------------
 CREATE TABLE watched_video (
     id        INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

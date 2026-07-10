@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	$pagename = 'refer';
+$pagename = 'refer';
 	$container = '';
 
     include_once("includes/user.inc.php");
@@ -26,7 +16,7 @@
 	$userreferredMembers = $configs->getUserReferredMembers($req_user_info['refer']);
 
 	// User's Income from Referred Members
-	$userIncomeFromReferredMembers = $configs->getUserReferIncome($req_user_info['login']);
+	$userIncomeFromReferredMembers = $configs->getUserReferIncome($req_user_info['id']);
 
 	// defined refer reward
 	$referReward = $configs->getConfig('REFER_REWARD');

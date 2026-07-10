@@ -1,14 +1,4 @@
 ﻿<?php
-
-    /*!
-	 * FLY CASH v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
 ?>
 <header class="modern-header">
     <div class="header-container">
@@ -60,7 +50,7 @@
             </div>
             <div class="user-menu">
                 <div class="user-trigger" onclick="document.getElementById('userDropdown').classList.toggle('show')">
-                    <span class="user-avatar"><?php echo esc_attr(strtoupper($req_user_info['fullname'][0])); ?></span>
+                    <span class="user-avatar"><?php echo esc_attr(!empty($req_user_info['fullname']) ? strtoupper($req_user_info['fullname'][0]) : '?'); ?></span>
                     <span class="user-name"><?php echo esc_attr($req_user_info['fullname']); ?></span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>

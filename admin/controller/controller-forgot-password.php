@@ -17,8 +17,6 @@
 	$APP_DESC = $configs->getConfig('APP_DESC');
 	
 	$email = '';
-	
-	function esc_attr($attr){ return htmlspecialchars($attr, ENT_COMPAT, 'UTF-8'); }
 
     if (!empty($_POST)) {
 
@@ -29,7 +27,7 @@
 
         $email = helper::escapeText($email);
 
-        if (helper::getAuthenticityToken() !== $token) {
+        if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
             $error = true;
             $error_message = 'Some Error, Try Again';

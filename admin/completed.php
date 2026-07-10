@@ -1,21 +1,10 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
-
-	$pagename = 'completed-requests';
+<?php
+$pagename = 'completed-requests';
 	$container = 'redeem-requests';
 	
 	include_once("inc/admin.inc.php");
 	
-    $completed = new completed($dbo);
+    $requests = new redemptions($dbo);
     
     include_once 'inc/admin_header.php'; ?>
 <div class="admin-content">
@@ -60,7 +49,7 @@
 										
 										<?php
 										
-											$result = $completed->getRequests(0);
+											$result = $requests->getRequests(0, 0, 0, 'completed');
 											$requests_loaded = count($result['requests']);
 											
 											if ($requests_loaded != 0) {

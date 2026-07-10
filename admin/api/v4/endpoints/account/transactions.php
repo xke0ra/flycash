@@ -17,9 +17,10 @@ if (!empty($username) && $userdata['username'] !== $username) {
 
 $limit = isset($data['limit']) ? intval($data['limit']) : 20;
 $offset = isset($data['offset']) ? intval($data['offset']) : 0;
+$accountId = $authData['accountId'];
 
-$stmt = $dbo->prepare("SELECT * FROM tracker WHERE username = :username AND type != '0' ORDER BY id DESC LIMIT " . intval($limit) . " OFFSET " . intval($offset));
-$stmt->execute(array(':username' => $userdata['username']));
+$stmt = $dbo->prepare("SELECT * FROM tracker WHERE user_id = :uid AND type != '0' ORDER BY id DESC LIMIT " . intval($limit) . " OFFSET " . intval($offset));
+$stmt->execute(array(':uid' => $accountId));
 
 $transactions = array();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

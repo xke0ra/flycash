@@ -1,15 +1,5 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	 include_once("../admin/core/init.inc.php");
+include_once("../admin/core/init.inc.php");
 	 include_once("../admin/controller/controller-forgot-password.php");
 
 ?><!DOCTYPE html>
@@ -25,7 +15,7 @@
     <div class="login-card">
         <div class="logo">
             <a href="index.php">
-                <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo">
+                <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo" loading="lazy">
             </a>
         </div>
         <h3>Reset Password</h3>

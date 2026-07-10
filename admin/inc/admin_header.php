@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * FLY CASH v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-
-	// Generate CSRF token for admin forms
+<?php
+// Generate CSRF token for admin forms
 	if (!isset($_SESSION['csrf_token'])) {
 		$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 	}

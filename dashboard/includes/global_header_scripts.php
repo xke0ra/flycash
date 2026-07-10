@@ -1,13 +1,4 @@
 ﻿<?php
-
-    /*!
-	 * POCKET v3.7
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
 ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		
@@ -22,4 +13,14 @@
 		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="assets/css/app.css?ver=3.7" rel="stylesheet" type="text/css" />
 		<link href="assets/css/modern.css?ver=1.0" rel="stylesheet" type="text/css" />
+		<link href="assets/css/notifications.bundle.css?ver=1.0" rel="stylesheet" type="text/css" />
+		<link href="assets/css/utilities.bundle.css?ver=1.0" rel="stylesheet" type="text/css" />
 		<!--end::Global Theme Styles -->
+		
+		<!--begin::PWA -->
+		<link rel="manifest" href="manifest.json">
+		<meta name="theme-color" content="#1a1a2e">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="apple-touch-icon" href="assets/media/icons/icon-192.svg">
+		<!--end::PWA -->

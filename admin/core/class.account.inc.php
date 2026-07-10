@@ -1,14 +1,4 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class account extends db_connect
 {
 
@@ -154,37 +144,26 @@ class account extends db_connect
                     
                     $notify = new functions($this->db);
                     
-                    $time  = time();
                     $referReward = $notify->getConfig('REFER_REWARD');
                     $referBonusTitle = $notify->getConfig('REFERAL_BONUS_TITLE');
                     $refererBonusTitle = $notify->getConfig('REFERER_BONUS_TITLE');
                     
-                    $newRefererBalance = $referdata['points'] + $referReward;
+                    $refererUserId = (int)$referdata['id'];
                     
-                    // Updating user Points & Refer status
-                    $sql = "UPDATE users SET points = :referReward, referer = :refererCode, refered = '1' WHERE login = :username";
+                    // Set referer tracking on new user, then credit via PointsService (atomic)
+                    $sql = "UPDATE users SET referer = :refererCode, refered = '1' WHERE id = :id";
                     $stmt = $this->db->prepare($sql);
-                    $stmt->execute(array(':referReward' => $referReward, ':refererCode' => $refererCode, ':username' => $username));
+                    $stmt->execute(array(':refererCode' => $refererCode, ':id' => $this->id));
                     
-                    // Updating Referer Points
-                    $sql = "UPDATE users SET points = :newRefererBalance WHERE login = :rererUserName";
-                    $stmt = $this->db->prepare($sql);
-                    $stmt->execute(array(':newRefererBalance' => $newRefererBalance, ':rererUserName' => $rererUserName));
+                    // Credit referrer's bonus atomically via PointsService (no push to avoid abort risk)
+                    $pointsService = new \FlyCash\Services\PointsService($this->db);
+                    $pointsService->creditUserPointsByUserId($refererUserId, (int)$referReward, (string)$referBonusTitle, 'Referral bonus for referring ' . $username, true, false);
                     
-                    // Updating user Tracker
-                    $sql = "INSERT INTO tracker(username, points, type, date) values (:username, :referReward, :referBonusTitle, :time)";
-                    $stmt = $this->db->prepare($sql);
-                    $stmt->execute(array(':username' => $username, ':referReward' => $referReward, ':referBonusTitle' => $referBonusTitle, ':time' => $time));
+                    // Credit new user's referral bonus atomically via PointsService
+                    $pointsService->creditUserPoints($username, (int)$referReward, (string)$refererBonusTitle, 'You earned ' . $referReward . ' points as a signup bonus', true, false);
                     
-                    // Updating Referer Tracker
-                    $sql = "INSERT INTO tracker(username, points, type, date) values (:rererUserName, :referReward2, :refererBonusTitle, :time2)";
-                    $stmt = $this->db->prepare($sql);
-                    
-                    if($stmt->execute(array(':rererUserName' => $rererUserName, ':referReward2' => $referReward, ':refererBonusTitle' => $refererBonusTitle, ':time2' => $time))){
-                        
-                        $notif = new notifications($this->db);
-                        $notif->add($username, 'Referral Bonus', 'You earned '.$referReward.' points as a signup bonus', $referReward);
-                        $notif->add($rererUserName, 'Referral Bonus', 'You earned '.$referReward.' points for referring '.$username, $referReward);
+                    // Manually send push to referrer (only after both credits succeeded)
+                    if (!empty($referdata['gcm'])) {
                         $notify->sendPush($referdata['gcm'], "referer", $referReward, "none", "none");
                     }
                     
@@ -273,7 +252,7 @@ class account extends db_connect
         $access_data = array('error' => true);
 
         $username = helper::clearText($username);
-        $password = helper::clearText($password);
+        $password = trim($password);
         
         if (helper::isCorrectEmail($username)) {
             
@@ -293,10 +272,18 @@ class account extends db_connect
 
             $row = $stmt->fetch();
 
-            if (intval($row['email_verified']) === 0) {
+            $isDev = (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'development');
+            if (!$isDev && intval($row['email_verified']) === 0) {
                 $access_data = array("error" => true,
                                      "error_code" => 403,
                                      "error_description" => "Email not verified. Please check your inbox.");
+                return $access_data;
+            }
+
+            if ((int)$row['state'] !== (defined('ACCOUNT_STATE_ENABLED') ? ACCOUNT_STATE_ENABLED : 0)) {
+                $access_data = array("error" => true,
+                                     "error_code" => 403,
+                                     "error_description" => "This account is not active. Please contact support.");
                 return $access_data;
             }
 
@@ -363,13 +350,11 @@ class account extends db_connect
             return $result;
         }
         
-        $newSalt = helper::generateSalt(3);
-        $newHash = md5(md5($password).$newSalt);
+        $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
-        $stmt = $this->db->prepare("UPDATE users SET passw = (:newHash), salt = (:newSalt) WHERE id = (:accountId)");
+        $stmt = $this->db->prepare("UPDATE users SET passw = (:newHash), salt = '' WHERE id = (:accountId)");
         $stmt->bindParam(":accountId", $this->id, PDO::PARAM_INT);
         $stmt->bindParam(":newHash", $newHash, PDO::PARAM_STR);
-        $stmt->bindParam(":newSalt", $newSalt, PDO::PARAM_STR);
         
         if($stmt->execute()){
             
@@ -455,21 +440,16 @@ class account extends db_connect
             return $restorePointInfo;
         }
 
-        $currentTime = time();	// Current time
+        $currentTime = time();
+        $expiresAt = $currentTime + 3600;
 
-        $u_agent = helper::u_agent();
-        $ip_addr = helper::ip_addr();
+        $hash = bin2hex(random_bytes(32));
 
-        $hash = md5(uniqid(rand(), true));
-
-        $stmt = $this->db->prepare("INSERT INTO restore_data (accountId, hash, email, clientId, createAt, u_agent, ip_addr) value (:accountId, :hash, :email, :clientId, :createAt, :u_agent, :ip_addr)");
+        $stmt = $this->db->prepare("INSERT INTO restore_data (accountId, hash, email, removeAt, expiresAt) VALUES (:accountId, :hash, :email, 0, :expiresAt)");
         $stmt->bindParam(":accountId", $this->id, PDO::PARAM_INT);
         $stmt->bindParam(":hash", $hash, PDO::PARAM_STR);
         $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-        $stmt->bindParam(":clientId", $clientId, PDO::PARAM_INT);
-        $stmt->bindParam(":createAt", $currentTime, PDO::PARAM_INT);
-        $stmt->bindParam(":u_agent", $u_agent, PDO::PARAM_STR);
-        $stmt->bindParam(":ip_addr", $ip_addr, PDO::PARAM_STR);
+        $stmt->bindParam(":expiresAt", $expiresAt, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
@@ -488,8 +468,10 @@ class account extends db_connect
         $result = array("error" => true,
                         "error_code" => ERROR_UNKNOWN);
 
-        $stmt = $this->db->prepare("SELECT * FROM restore_data WHERE accountId = (:accountId) AND removeAt = 0 LIMIT 1");
+        $stmt = $this->db->prepare("SELECT * FROM restore_data WHERE accountId = (:accountId) AND removeAt = 0 AND (expiresAt = 0 OR expiresAt > :now) LIMIT 1");
         $stmt->bindParam(":accountId", $this->id, PDO::PARAM_INT);
+        $now = time();
+        $stmt->bindParam(":now", $now, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
@@ -629,13 +611,13 @@ class account extends db_connect
         return $result;
     }
 
-    public function getOldRefersData($username)
+    public function getOldRefersData($userId)
     {
         $result = array("error" => true,
                         "error_code" => ERROR_ACCOUNT_ID);
 
-        $stmt = $this->db->prepare("SELECT * FROM referers WHERE username = (:username) LIMIT 1");
-        $stmt->bindParam(":username", $username, PDO::PARAM_STR);
+        $stmt = $this->db->prepare("SELECT * FROM referers WHERE user_id = :userId LIMIT 1");
+        $stmt->bindParam(":userId", $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
 
@@ -840,7 +822,7 @@ class account extends db_connect
 
     static function createAccessToken()
     {
-        $access_token = md5(uniqid(rand(), true));
+        $access_token = bin2hex(random_bytes(32));
 
         if (isset($_SESSION)) {
 

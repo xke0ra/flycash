@@ -23,9 +23,10 @@ if (!empty($username) && $userdata['username'] !== $username) {
 }
 
 $spinRewardTitle = $api->getConfig('SPIN_REWARD_TITLE');
+$accountId = $authData['accountId'];
 
-$stmt = $dbo->prepare("SELECT * FROM tracker WHERE username = :user AND type = :title ORDER BY id DESC LIMIT 1");
-$stmt->execute(array(':user' => $userdata['username'], ':title' => $spinRewardTitle));
+$stmt = $dbo->prepare("SELECT * FROM tracker WHERE user_id = :uid AND type = :title ORDER BY id DESC LIMIT 1");
+$stmt->execute(array(':uid' => $accountId, ':title' => $spinRewardTitle));
 
 $rewardUser = true;
 if ($stmt->rowCount() > 0) {

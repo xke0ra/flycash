@@ -1,20 +1,10 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-	 
-	$pagename = 'processing-requests';
+<?php
+$pagename = 'processing-requests';
 	$container = 'redeem-requests';
 	
 	include_once("inc/admin.inc.php");
 	
-    $requests = new requests($dbo);
+    $requests = new redemptions($dbo);
     
     include_once 'inc/admin_header.php'; ?>
 <div class="admin-content">
@@ -60,17 +50,13 @@
 										
 										<?php
 										
-											$result = $requests->getRequests(0);
+											$result = $requests->getRequests(0, 0, 0, 'processing');
 											$requests_loaded = count($result['requests']);
 											
 											if ($requests_loaded != 0) {
 												
 												foreach ($result['requests'] as $key => $value) {
-												    
-												    if($value['status'] == 2){
-												        draw($value);
-												    }
-													
+												    draw($value);
 												}
 											}
 										?>

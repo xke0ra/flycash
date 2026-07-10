@@ -1,15 +1,5 @@
-﻿<?php
-
-    /*!
-	 * FLY CASH v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-	
-	// Install Handler
+<?php
+// Install Handler
 	if (file_exists('install')) {
 		
 		echo '<html lang="en"><head><title>FLY CASH - Rewards Application</title></head>';

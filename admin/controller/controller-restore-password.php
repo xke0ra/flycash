@@ -51,13 +51,10 @@
         $user_password_repeat = isset($_POST['user_password_repeat']) ? $_POST['user_password_repeat'] : '';
         $token = isset($_POST['authenticity_token']) ? $_POST['authenticity_token'] : '';
 
-        $user_password = helper::clearText($user_password);
-        $user_password_repeat = helper::clearText($user_password_repeat);
+        $user_password = trim($user_password);
+        $user_password_repeat = trim($user_password_repeat);
 
-        $user_password = helper::escapeText($user_password);
-        $user_password_repeat = helper::escapeText($user_password_repeat);
-
-        if (helper::getAuthenticityToken() !== $token) {
+        if (!hash_equals((string)helper::getAuthenticityToken(), (string)$token)) {
 
             $error = true;
             $error_message = 'Some Error, Try Again';

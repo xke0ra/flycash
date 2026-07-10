@@ -14,11 +14,21 @@ error_log
 
 # Environment
 .env
+.env.testing
 admin/core/config.php
+
+# Logs
+logs/
+!logs/.gitkeep
+
+# Storage
+storage/
+!storage/.gitkeep
 
 # Dependencies
 vendor/
 node_modules/
+package-lock.json
 
 # Build assets
 public/assets/build/
@@ -31,6 +41,7 @@ public/assets/build/
 install/
 
 # Temp
+.phpunit.cache/
 tmp/
 temp/
 

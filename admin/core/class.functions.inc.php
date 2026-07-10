@@ -1,109 +1,108 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.4
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2019 AYM ( http://www.aym.com )
-	 */
-
+<?php
 class functions extends db_connect
 {
     private $requestFrom = 0;
+
+    private ?\FlyCash\Services\PointsService $pointsService = null;
+    private ?\FlyCash\Services\SecurityService $securityService = null;
+    private ?\FlyCash\Services\UserService $userService = null;
+    private ?\FlyCash\Services\ConfigService $configService = null;
+    private ?\FlyCash\Services\OfferwallService $offerwallService = null;
+    private ?\FlyCash\Services\AnalyticsService $analyticsService = null;
+    private ?\FlyCash\Services\NotificationService $notificationService = null;
 
     public function __construct($dbo = NULL)
     {
         parent::__construct($dbo);
 
     }
+
+    public function getPointsService(): \FlyCash\Services\PointsService
+    {
+        if ($this->pointsService === null) {
+            $this->pointsService = new \FlyCash\Services\PointsService($this->db);
+        }
+        return $this->pointsService;
+    }
+
+    public function getSecurityService(): \FlyCash\Services\SecurityService
+    {
+        if ($this->securityService === null) {
+            $this->securityService = new \FlyCash\Services\SecurityService($this->db);
+        }
+        return $this->securityService;
+    }
+
+    public function getUserService(): \FlyCash\Services\UserService
+    {
+        if ($this->userService === null) {
+            $this->userService = new \FlyCash\Services\UserService($this->db);
+        }
+        return $this->userService;
+    }
+
+    public function getConfigService(): \FlyCash\Services\ConfigService
+    {
+        if ($this->configService === null) {
+            $this->configService = new \FlyCash\Services\ConfigService($this->db);
+        }
+        return $this->configService;
+    }
+
+    public function getOfferwallService(): \FlyCash\Services\OfferwallService
+    {
+        if ($this->offerwallService === null) {
+            $this->offerwallService = new \FlyCash\Services\OfferwallService($this->db);
+        }
+        return $this->offerwallService;
+    }
+
+    public function getAnalyticsService(): \FlyCash\Services\AnalyticsService
+    {
+        if ($this->analyticsService === null) {
+            $this->analyticsService = new \FlyCash\Services\AnalyticsService($this->db);
+        }
+        return $this->analyticsService;
+    }
+
+    public function getNotificationService(): \FlyCash\Services\NotificationService
+    {
+        if ($this->notificationService === null) {
+            $this->notificationService = new \FlyCash\Services\NotificationService($this->db);
+        }
+        return $this->notificationService;
+    }
     
     public function getUserInfo($userId) {
-        $query = "SELECT * FROM users WHERE id = :id";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute(array(':id' => $userId));
-        $dbarray = $stmt->fetch();
-        /* Error occurred, return given name by default */
-        //$result = count($dbarray);
-        if (!$dbarray) {
-            return NULL;
-        }
-        /* Return result array */
-        return $dbarray;
+        return $this->getUserService()->getUserInfo($userId);
     }
     
     public function getUserInfoByValue($field, $value) {
-        $query = "SELECT * FROM users WHERE ".$field." = :value";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute(array(':value' => $value));
-        $dbarray = $stmt->fetch();
-        
-        
-        if (!$dbarray) {
-            return NULL;
-        }
-        /* Return result array */
-        return $dbarray;
+        return $this->getUserService()->getUserInfoByValue($field, $value);
     }
     
     public function updateUserAccess($userId) {
-		$result = false;
-		
-        $ipaddr = $_SERVER['REMOTE_ADDR'];
-        $time = time();
-        
-        $stmt = $this->db->prepare("UPDATE users SET last_access = (:time),last_ip_addr = (:ipaddr) WHERE id = (:id)");
-        $stmt->bindParam(":ipaddr", $ipaddr, PDO::PARAM_STR);
-        $stmt->bindParam(":time", $time, PDO::PARAM_STR);
-        $stmt->bindParam(":id", $userId, PDO::PARAM_INT);
-        $result = $stmt->execute();
-		
-        return $result;
+        return $this->getUserService()->updateUserAccess($userId);
     }
     
     public function getUserReferredMembers($refererCode)
     {
-		$stmt = $this->db->prepare("SELECT count(*) FROM users where referer = :referer");
-        $stmt->execute(array(':referer' => $refererCode));
-
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getUserService()->getUserReferredMembers($refererCode);
     }
     
-    public function getUserReferIncome($username)
+    public function getUserReferIncome($userId)
     {
-        $type = $this->getConfig('REFERER_BONUS_TITLE');
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where username = :username AND type = :type");
-        $stmt->execute(array(':username' => $username, ':type' => $type));
-        
-        $actual_referIncome = $stmt->fetchColumn();
-        
-        $userIncomeFromReferredMembers = 0;
-        if( $actual_referIncome > 1){ $userIncomeFromReferredMembers = $actual_referIncome; };
-
-        return $userIncomeFromReferredMembers;
+        return $this->getUserService()->getUserReferIncome((int)$userId);
     }
 
-    public function getUserRedeemedPoints($username)
+    public function getUserRedeemedPoints($userId)
     {
-		$stmt = $this->db->prepare("SELECT SUM(points_used) FROM Requests where username = :username");
-        $stmt->execute(array(':username' => $username));
-        $fromRequests = $stmt->fetchColumn();
-        
-		$stmt = $this->db->prepare("SELECT SUM(points_used) FROM Completed where username = :username");
-        $stmt->execute(array(':username' => $username));
-        $fromCompleted = $stmt->fetchColumn();
-        
-        $userRedeemedPoints = 0;
-        $actual_redeemedpoints = $fromRequests+$fromCompleted;
-        if( $actual_redeemedpoints > 1){ $userRedeemedPoints = $actual_redeemedpoints; };
-        
-        return $userRedeemedPoints;
+        return $this->getUserService()->getUserRedeemedPoints((int)$userId);
     }
 
     public function getRequestsCount()
     {
-        $stmt = $this->db->prepare("SELECT count(*) FROM Requests");
+        $stmt = $this->db->prepare("SELECT count(*) FROM redemptions");
         $stmt->execute();
 
         return $number_of_rows = $stmt->fetchColumn();
@@ -130,14 +129,6 @@ class functions extends db_connect
         }
         
         return $result;
-    }
-
-    private function getMaxRequestsId()
-    {
-        $stmt = $this->db->prepare("SELECT MAX(rid) FROM Requests");
-        $stmt->execute();
-
-        return $number_of_rows = $stmt->fetchColumn();
     }
 
     public function calcPercent($amount,$type)
@@ -207,11 +198,7 @@ class functions extends db_connect
 
     public function getNewUsers()
     {
-        $today = strtotime(date("d-m-Y", time()));
-		$stmt = $this->db->prepare("SELECT count(*) FROM users where regtime >= :today");
-        $stmt->execute(array(':today' => $today));
-
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getAnalyticsService()->getNewUsers();
     }
 
     public function getOldUsers()
@@ -233,78 +220,41 @@ class functions extends db_connect
 
     public function getTodayActiveusers()
     {
-        $today = strtotime(date("d-m-Y", time()));
-		$stmt = $this->db->prepare("SELECT count(*) FROM users where last_access >= :today");
-        $stmt->execute(array(':today' => $today));
-
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getAnalyticsService()->getTodayActiveUsers();
     }
 
     public function getTotalTodayPoints()
     {
-        $today = strtotime(date("d-m-Y", time()));
-		$type = "Daily Checkin Credit Test Credit";
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where (date >= :today AND type != :type)");
-        $stmt->execute(array(':today' => $today, ':type' => $type));
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getPointsService()->getTotalTodayPoints();
     }
 
     public function getTotalYesterdayPoints()
     {
-		$time = time();
-        $oldtime = $time - 24 * 3600;
-		$today = strtotime(date("d-m-Y", $time));
-        $yesterday = strtotime(date("d-m-Y", $oldtime));
-        $type = "Daily Checkin Credit Test Credit";
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where (date BETWEEN :yesterday AND :today) AND type != :type)");
-        $stmt->execute(array(':yesterday' => $yesterday, ':today' => $today, ':type' => $type));
-		$number_of_rows = $stmt->fetchColumn();
-		
-		if($number_of_rows < 1){
-			$number_of_rows = 1;
-		}
-
-        return $number_of_rows;
+        return $this->getPointsService()->getTotalYesterdayPoints();
     }
 
     public function getTotalAllTimePoints()
     {
-		$type = "Daily Checkin Credit Test Credit";
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where type != :type");
-        $stmt->execute(array(':type' => $type));
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getPointsService()->getTotalAllTimePoints();
     }
 
     public function getTotalMonthPoints()
     {
-		$type = "Daily Checkin Credit Test Credit";
-		$time = strtotime("01-" .date("m-Y", time()));
-		$month = strtotime(date("Y-m-d", $time));
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where (date >= :month AND type != :type)");
-        $stmt->execute(array(':month' => $month, ':type' => $type));
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getPointsService()->getTotalMonthPoints();
     }
 
     public function getTotalWeekPoints()
     {
-		$type = "Daily Checkin Credit Test Credit";
-		$day = date('w');
-		$week = strtotime(date('Y-m-d', strtotime('-'.$day.' days')));
-		$stmt = $this->db->prepare("SELECT SUM(points) FROM tracker where (date >= :week AND type != :type)");
-        $stmt->execute(array(':week' => $week, ':type' => $type));
-        return $number_of_rows = $stmt->fetchColumn();
+        return $this->getPointsService()->getTotalWeekPoints();
     }
 
     public function getCurrentTotalPoints() {
-        $sql = "SELECT SUM(points) FROM users";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $row = $stmt->fetchColumn();
+        return $this->getPointsService()->getCurrentTotalPoints();
     }
 
     public function getCompletedRequests()
     {
-        $stmt = $this->db->prepare("SELECT count(*) FROM Completed");
+        $stmt = $this->db->prepare("SELECT count(*) FROM redemptions WHERE status = 'completed'");
         $stmt->execute();
 
         return $number_of_rows = $stmt->fetchColumn();
@@ -312,7 +262,7 @@ class functions extends db_connect
 	
     public function getPendingRequests()
     {
-        $stmt = $this->db->prepare("SELECT count(*) FROM Requests where status = 0");
+        $stmt = $this->db->prepare("SELECT count(*) FROM redemptions WHERE status = 'pending'");
         $stmt->execute();
 
         return $number_of_rows = $stmt->fetchColumn();
@@ -320,7 +270,7 @@ class functions extends db_connect
 
     public function getProcessingRequests()
     {
-        $stmt = $this->db->prepare("SELECT count(*) FROM Requests where status = 2");
+        $stmt = $this->db->prepare("SELECT count(*) FROM redemptions WHERE status = 'processing'");
         $stmt->execute();
 
         return $number_of_rows = $stmt->fetchColumn();
@@ -328,24 +278,14 @@ class functions extends db_connect
 
     public function getRejectedRequests()
     {
-        $stmt = $this->db->prepare("SELECT count(*) FROM Requests where status = 3");
+        $stmt = $this->db->prepare("SELECT count(*) FROM redemptions WHERE status = 'rejected'");
         $stmt->execute();
 
         return $number_of_rows = $stmt->fetchColumn();
     }
 
-    private static $configCache = array();
-
     public function getConfig($value) {
-        if (isset(self::$configCache[$value])) {
-            return self::$configCache[$value];
-        }
-        $sql = "SELECT config_value FROM configuration WHERE config_name = :value";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(':value' => $value));
-        $result = $stmt->fetchColumn();
-        self::$configCache[$value] = $result;
-        return $result;
+        return $this->getConfigService()->get($value, '');
     }
 
     public function getAdminUserName() {
@@ -381,23 +321,11 @@ class functions extends db_connect
 
     public function isWhitelisted($ip)
     {
-        $stmt = $this->db->prepare("SELECT id FROM whitelists WHERE ip_addr = (:ip) LIMIT 1");
-        $stmt->bindParam(":ip", $ip, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            if ($stmt->rowCount() > 0) {
-
-                return true;
-            }
-        }
-
-        return false;
+        return $this->getOfferwallService()->isWhitelisted($ip);
     }
     
 
     function updateConfigs($value, $configname) {
-        unset(self::$configCache[$configname]);
         $sql = "UPDATE configuration SET config_value = :value WHERE config_name = :configname";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute(array(':value' => $value, ':configname' => $configname));
@@ -412,7 +340,7 @@ class functions extends db_connect
     public function completeofferStatusData($clickId){
         
         $stmt = $this->db->prepare("UPDATE offer_status SET status = '1' WHERE cid = (:clickId) LIMIT 1");
-        $stmt->bindParam(":clickId", $clickId, PDO::PARAM_INT);
+        $stmt->bindParam(":clickId", $clickId, PDO::PARAM_STR);
         
         return $stmt->execute();
         
@@ -424,7 +352,7 @@ class functions extends db_connect
                         "error_code" => ERROR_ACCOUNT_ID);
 
         $stmt = $this->db->prepare("SELECT * FROM offer_status WHERE cid = (:clickId) LIMIT 1");
-        $stmt->bindParam(":clickId", $clickId, PDO::PARAM_INT);
+        $stmt->bindParam(":clickId", $clickId, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
 
@@ -524,7 +452,11 @@ class functions extends db_connect
 		
         $result = curl_exec($ch);
         if ($result === FALSE) {
-            die('Problem occurred: ' . curl_error($ch));
+            if (isset($GLOBALS['logger'])) {
+            $GLOBALS['logger']->error('cURL error in sendPush', ['curl_error' => curl_error($ch)]);
+        }
+            curl_close($ch);
+            return false;
         }
 		
         curl_close($ch);
@@ -534,105 +466,24 @@ class functions extends db_connect
         return $result;
     }
 	
-	public function getDailyCheckinTimeLeft($userName){
-	    
-	    $timeLeft = -1;
-	    
-	    $checkinBonusTitle = $this->getConfig('CHECKIN_BONUS_TITLE');
-	    
-	    $sql = "SELECT * FROM tracker WHERE username = :userName AND type = :checkinBonusTitle ORDER BY id DESC LIMIT 1";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(':userName' => $userName, ':checkinBonusTitle' => $checkinBonusTitle));
-        
-        if ($stmt->rowCount() > 0) {
-            
-            $row = $stmt->fetch();
-            
-            // "1539068949"
-            $timeData = $row['date'];
-            
-            $timeCurrent = time();
-            
-            $timeCalculated = $timeData + 24 * 3600;
-            
-            $difference = $timeCalculated - $timeCurrent;
-            
-            if($timeCalculated > $timeCurrent){
-                
-                //api::printError(410, $diff);
-                
-                $timeLeft = $difference;
-            }
-            
-        }
-        
-        return $timeLeft;
-	    
+	public function getDailyCheckinTimeLeft($userId){
+	    return $this->getUserService()->getDailyCheckinTimeLeft((int)$userId);
 	}
 
 	public function isIpBanned($ip) {
-		$stmt = $this->db->prepare("SELECT id FROM banned_ips WHERE ip_addr = :ip AND expires_at > :now LIMIT 1");
-		$stmt->execute(array(':ip' => $ip, ':now' => time()));
-		return $stmt->rowCount() > 0;
+		return $this->getSecurityService()->isIpBanned($ip);
 	}
 
 	public function banIp($ip, $reason = 'Too many failed attempts', $durationMinutes = 15) {
-		$now = time();
-		$expires = $now + ($durationMinutes * 60);
-		$stmt = $this->db->prepare("INSERT INTO banned_ips (ip_addr, reason, banned_at, expires_at) VALUES (:ip, :reason, :now, :exp)");
-		$stmt->execute(array(':ip' => $ip, ':reason' => $reason, ':now' => $now, ':exp' => $expires));
-		$stmt = $this->db->prepare("DELETE FROM rate_limits WHERE identifier = :ip AND window_start < :old");
-		$stmt->execute(array(':ip' => $ip, ':old' => $now));
+		$this->getSecurityService()->banIp($ip, $reason, $durationMinutes);
 	}
 
 	public function logFailedAttempt($identifier) {
-		$maxFail = 10;
-		$windowSec = 900;
-		$now = time();
-		$ws = $now - $windowSec;
-
-		$stmt = $this->db->prepare("SELECT SUM(attempts) FROM rate_limits WHERE identifier = :id AND action = 'failed_login' AND window_start > :ws");
-		$stmt->execute(array(':id' => $identifier, ':ws' => $ws));
-		$total = intval($stmt->fetchColumn()) + 1;
-
-		$stmt = $this->db->prepare("INSERT INTO rate_limits (identifier, action, attempts, window_start) VALUES (:id, 'failed_login', 1, :now)");
-		$stmt->execute(array(':id' => $identifier, ':now' => $now));
-
-		if ($total >= $maxFail) {
-			$this->banIp($identifier, 'Auto-ban: ' . $total . ' failed attempts');
-			return false;
-		}
-
-		$stmt = $this->db->prepare("DELETE FROM rate_limits WHERE window_start < :old");
-		$stmt->execute(array(':old' => $now - $windowSec * 2));
-
-		return true;
+		$this->getSecurityService()->logFailedAttempt($identifier);
 	}
 
 	public function checkRateLimit($identifier, $action, $maxAttempts = 10, $windowSeconds = 60) {
-		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
-		if ($this->isIpBanned($ip)) {
-			return false;
-		}
-
-		$now = time();
-		$windowStart = $now - $windowSeconds;
-
-		$stmt = $this->db->prepare("SELECT SUM(attempts) FROM rate_limits WHERE identifier = :id AND action = :act AND window_start > :ws");
-		$stmt->execute(array(':id' => $identifier, ':act' => $action, ':ws' => $windowStart));
-		$total = intval($stmt->fetchColumn());
-
-		if ($total >= $maxAttempts) {
-			return false;
-		}
-
-		$stmt = $this->db->prepare("INSERT INTO rate_limits (identifier, action, attempts, window_start) VALUES (:id, :act, 1, :now)");
-		$stmt->execute(array(':id' => $identifier, ':act' => $action, ':now' => $now));
-
-		$stmt = $this->db->prepare("DELETE FROM rate_limits WHERE window_start < :old");
-		$stmt->execute(array(':old' => $now - $windowSeconds * 2));
-
-		return true;
+		return $this->getSecurityService()->checkRateLimit($identifier, $action, $maxAttempts, $windowSeconds);
 	}
 
 	public function logAudit($adminId, $adminName, $action, $target = '', $details = '') {
@@ -651,47 +502,7 @@ class functions extends db_connect
 	}
 
 	public function creditUserPoints($username, $points, $type, $description = '', $notify = true, $push = true) {
-		$result = false;
-		$timeCurrent = time();
-
-		$stmt = $this->db->prepare("SELECT id, points, gcm FROM users WHERE login = :username LIMIT 1");
-		$stmt->execute(array(':username' => $username));
-		$user = $stmt->fetch();
-
-		if ($user) {
-			$newBalance = intval($user['points']) + intval($points);
-			if ($newBalance < 0) $newBalance = 0;
-
-			try {
-				$this->db->beginTransaction();
-
-				$sql1 = "UPDATE users SET points = :newBalance WHERE login = :username";
-				$st1 = $this->db->prepare($sql1);
-				$st1->execute(array(':newBalance' => $newBalance, ':username' => $username));
-
-				$sql2 = "INSERT INTO tracker (username, points, type, date) VALUES (:username, :points, :type, :timeCurrent)";
-				$st2 = $this->db->prepare($sql2);
-				$st2->execute(array(':username' => $username, ':points' => $points, ':type' => $type, ':timeCurrent' => $timeCurrent));
-
-				$this->db->commit();
-				$result = true;
-
-			} catch (Exception $e) {
-				$this->db->rollBack();
-				return false;
-			}
-
-			if ($result && $notify) {
-				$notif = new notifications($this->db);
-				$notif->add($username, $type, $description ?: $type . ' ' . $points . ' points', $points);
-			}
-
-			if ($result && $push && !empty($user['gcm'])) {
-				$this->sendPush($user['gcm'], 'credit', $points, 'none', 'none');
-			}
-		}
-
-		return $result;
+		return $this->getPointsService()->creditUserPoints($username, $points, $type, $description, $notify, $push);
 	}
 
 }

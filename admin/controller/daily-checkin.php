@@ -1,16 +1,5 @@
-﻿<?php
-
-    /*!
-	 * POCKET v3.6
-	 *
-	 * http://www.aym.com
-	 * support@aym.com
-	 *
-	 * Copyright 2020 AYM ( http://www.aym.com )
-	 */
-	 
-	 
-	include_once("../core/init.inc.php");
+<?php
+include_once("../core/init.inc.php");
 	
 	// Default Result
 	$result = array('error' => true, 'error_code' => 101, 'error_description' => "Invalid Client Id");
@@ -34,11 +23,9 @@
         
         $rewardUser = false;
         
-        $user = $userdata['username'];
-        
-        $sql = "SELECT * FROM tracker WHERE username = :user AND type = :checkinBonusTitle ORDER BY id DESC LIMIT 1";
+        $sql = "SELECT * FROM tracker WHERE user_id = :uid AND type = :checkinBonusTitle ORDER BY id DESC LIMIT 1";
         $stmt = $dbo->prepare($sql);
-        $stmt->execute(array(':user' => $user, ':checkinBonusTitle' => $checkinBonusTitle));
+        $stmt->execute(array(':uid' => $accountId, ':checkinBonusTitle' => $checkinBonusTitle));
         
         if ($stmt->rowCount() > 0) {
             
@@ -74,20 +61,16 @@
             
         }
         
-        if($rewardUser){
-            
-            if ($notify->creditUserPoints($user, $checkinReward, $checkinBonusTitle, 'You earned '.$checkinReward.' points from daily check-in')) {
+        if ($notify->creditUserPoints($userdata['username'], $checkinReward, $checkinBonusTitle, 'You earned '.$checkinReward.' points from daily check-in')) {
             
             $result = array('error' => false, 'error_code' => 100, 'error_description' => "Daily Checkin Reward Credited Successfully.");
             
             echo json_encode($result);
             exit;
             
-            }else{ api::printError(404, "Server Error"); }
+        } else {
             
-        }else{
-            
-            api::printError(410, "Server Error");
+            api::printError(404, "Server Error");
             
         }
         

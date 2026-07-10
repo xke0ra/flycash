@@ -1,14 +1,4 @@
 <?php
-
-    /*!
-     * FLY CASH API v4 Router
-     *
-     * http://www.aym.com
-     * support@aym.com
-     *
-     * Copyright 2022 AYM ( http://www.aym.com )
-     */
-
 require_once __DIR__ . '/api_v4.inc.php';
 
 $endpoint = isset($_GET['endpoint']) ? preg_replace('/[^a-zA-Z0-9_\/-]/', '', $_GET['endpoint']) : '';
