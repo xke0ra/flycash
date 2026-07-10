@@ -12,14 +12,14 @@ class OgAdsHandler extends Handler
     protected function parseRequest(): void
     {
         $this->userId = $this->getString('user');
-        $this->amount = $this->getInt('amount');
+        $usdAmount = (float)$this->getString('amount');
 
         // OgAds does not provide a unique transaction ID;
         // leave empty so we rely on IP whitelist + daily cap instead
         $this->transactionId = '';
 
         // Convert USD to points ($1 USD = 300 Points)
-        $this->amount = (int)($this->amount * 300);
+        $this->amount = (int)($usdAmount * 300);
     }
 
     protected function shouldProcess(): bool
