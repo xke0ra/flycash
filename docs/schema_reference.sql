@@ -106,7 +106,8 @@ CREATE TABLE offerwalls (
     type      VARCHAR(64) NOT NULL DEFAULT '',
     featured  TINYINT(1) NOT NULL DEFAULT 0,
     position  INT(11) NOT NULL DEFAULT 0,
-    status    TINYINT(1) NOT NULL DEFAULT 1
+    status    TINYINT(1) NOT NULL DEFAULT 1,
+    INDEX idx_position (position)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------------------------------------
@@ -153,13 +154,16 @@ CREATE TABLE redemptions (
 -- -------------------------------------------------------
 CREATE TABLE tracker (
     id        INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id   INT(11) UNSIGNED DEFAULT NULL,
     username  VARCHAR(64) NOT NULL DEFAULT '',
     points    INT(11) NOT NULL DEFAULT 0,
     type      VARCHAR(128) NOT NULL DEFAULT '',
     date      INT(10) UNSIGNED NOT NULL DEFAULT 0,
     INDEX idx_username (username),
     INDEX idx_type (type),
-    INDEX idx_date (date)
+    INDEX idx_date (date),
+    INDEX idx_user_id (user_id),
+    INDEX idx_tracker_user_date (user_id, date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------------------------------------
