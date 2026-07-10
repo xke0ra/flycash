@@ -179,11 +179,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/SigninResponse"
         "400":
-          description: Error
+          description: Error (invalid credentials or rate limited)
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests (rate limited — max 5 attempts/minute)
 
   /auth/signup:
     post:
@@ -239,9 +241,30 @@ paths:
   /auth/verify:
     post:
       summary: Verify account
-      description: Verify user account with email verification code
+      description: Verify user account with email verification hash
       tags:
         - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: integer
+                accountId:
+                  type: integer
+                accessToken:
+                  type: string
+                hash:
+                  type: string
+                  description: Verification hash from email
+      responses:
+        "200":
+          description: Email verified
+        "400":
+          description: Invalid or expired hash
 
   /account/balance:
     post:
@@ -463,4 +486,5 @@ x-error-codes:
   302: IP already taken
   400: Account not found
   403: Forbidden (IP banned / CSRF)
+  429: Rate limited (max 5 attempts/minute)
   503: Server not configured
