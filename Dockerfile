@@ -1,8 +1,5 @@
 FROM php:8.4-apache
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -36,7 +33,7 @@ COPY . /var/www/html/
 
 # Create required directories
 RUN mkdir -p /var/www/html/logs /var/www/html/storage && \
-    chmod 777 /var/www/html/logs /var/www/html/storage
+    chmod 755 /var/www/html/logs /var/www/html/storage
 
 # Install PHP dependencies
 RUN composer install --no-progress --no-interaction --optimize-autoloader
