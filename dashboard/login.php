@@ -18,34 +18,41 @@ include_once("../admin/core/init.inc.php");
 	<body class="login-page">
 
     <div class="login-card">
-        <div class="logo">
-            <a href="index.php">
-                <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo" loading="lazy">
-            </a>
+        <div class="card-modern-header" style="text-align:center;border:none;justify-content:center;padding-bottom:0;">
+            <div>
+                <div class="logo">
+                    <a href="index.php">
+                        <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo" loading="lazy">
+                    </a>
+                </div>
+                <h3 style="font-size:24px;margin-top:16px;">Welcome Back</h3>
+            </div>
         </div>
-        <h3>Welcome Back</h3>
-
-        <?php if ($error){ ?>
-        <div class="alert alert-danger"><?php echo esc_attr($error_message); ?></div>
-        <?php } ?>
 
         <form name="signin_form" action="login.php" method="post">
             <input autocomplete="off" type="hidden" id="authenticity_token" name="authenticity_token" value="<?php echo helper::getAuthenticityToken(); ?>">
-            <div class="form-group">
-                <input class="form-control" placeholder="Email or Username" autocomplete="off" maxlength="60" id="user_username" name="user_username" type="text" value="<?php echo esc_attr($user_username); ?>" required>
+
+            <?php if ($error){ ?>
+            <div class="alert alert-danger" style="margin:0 24px 16px;"><?php echo esc_attr($error_message); ?></div>
+            <?php } ?>
+
+            <div class="card-modern-body">
+                <div class="form-group">
+                    <input class="form-control" placeholder="Email or Username" autocomplete="off" maxlength="60" id="user_username" name="user_username" type="text" value="<?php echo esc_attr($user_username); ?>" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Password" autocomplete="off" type="password" id="user_password" maxlength="20" name="user_password" required>
+                </div>
             </div>
-            <div class="form-group">
-                <input class="form-control" placeholder="Password" autocomplete="off" type="password" id="user_password" maxlength="20" name="user_password" required>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div class="card-modern-footer" style="flex-direction:column;gap:12px;">
+                <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
                 <a href="forgot-password.php" style="font-size:14px;color:var(--primary);">Forgot Password?</a>
-                <button type="submit" class="btn btn-primary" style="width:auto;padding:10px 28px;">Sign In</button>
             </div>
         </form>
 
         <?php if($configs->getConfig('FACEBOOK_LOGIN_WEB') || $configs->getConfig('GOOGLE_LOGIN_WEB')){ ?>
-        <div class="divider"><span>OR</span></div>
-        <div class="social-login">
+        <div class="divider" style="margin:0 24px;"><span>OR</span></div>
+        <div class="social-login" style="padding:0 24px 16px;">
             <?php if($configs->getConfig('FACEBOOK_LOGIN_WEB')){ ?>
             <a href="../admin/controller/oauth.php?provider=Facebook" class="btn btn-facebook">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -60,7 +67,7 @@ include_once("../admin/core/init.inc.php");
         </div>
         <?php } ?>
 
-        <div class="form-footer">
+        <div class="form-footer" style="margin:0 24px 24px;">
             <span>Don't have an account yet?</span>&nbsp;
             <a href="register.php">Sign Up!</a>
         </div>

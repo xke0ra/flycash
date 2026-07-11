@@ -18,50 +18,58 @@ include_once("../admin/core/init.inc.php");
 	<body class="login-page">
 
     <div class="login-card">
-        <div class="logo">
-            <a href="index.php">
-                <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo" loading="lazy">
-            </a>
+        <div class="card-modern-header" style="text-align:center;border:none;justify-content:center;padding-bottom:0;">
+            <div>
+                <div class="logo">
+                    <a href="index.php">
+                        <img src="../admin/images/<?php echo esc_attr($configs->getConfig('SITE_LOGO_DARK')); ?>" alt="Logo" loading="lazy">
+                    </a>
+                </div>
+                <h3 style="font-size:24px;margin-top:16px;">Create Account</h3>
+            </div>
         </div>
-        <h3>Create Account</h3>
 
         <?php if ($error){ ?>
-            <div class="alert alert-danger"><?php echo esc_attr($error_message); ?></div>
+            <div class="alert alert-danger" style="margin:0 24px 16px;"><?php echo esc_attr($error_message); ?></div>
         <?php } ?>
 
         <?php if ($success){ ?>
-            <div class="alert alert-success"><?php echo esc_attr($success_message); ?></div>
-            <div style="text-align:center;margin-top:16px;">
+            <div class="alert alert-success" style="margin:0 24px 16px;"><?php echo esc_attr($success_message); ?></div>
+            <div style="text-align:center;margin:0 24px 24px;">
                 <span>You can now Sign In here:</span>&nbsp;
                 <a href="login.php" style="font-weight:600;color:var(--primary);">Sign In!</a>
             </div>
         <?php }else{ ?>
             <form name="signin_form" action="register.php" method="post">
                 <input autocomplete="off" type="hidden" id="authenticity_token" name="authenticity_token" value="<?php echo helper::getAuthenticityToken(); ?>">
-                <div class="form-group">
-                    <input class="form-control" placeholder="Full Name" autocomplete="off" maxlength="30" id="fullname" name="fullname" type="text" value="<?php echo esc_attr($fullname); ?>" required>
+                <div class="card-modern-body">
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Full Name" autocomplete="off" maxlength="30" id="fullname" name="fullname" type="text" value="<?php echo esc_attr($fullname); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username" autocomplete="off" maxlength="10" id="username" name="username" type="text" value="<?php echo esc_attr($username); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Email" autocomplete="off" maxlength="50" id="email" name="email" type="email" value="<?php echo esc_attr($email); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Confirm Email" autocomplete="off" maxlength="50" id="confirm_email" name="confirm_email" type="email" value="<?php echo esc_attr($confirm_email); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password" autocomplete="off" type="password" id="password" maxlength="20" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Referer Code (optional)" autocomplete="off" maxlength="10" id="referer" name="referer" type="text" <?php if(isset($_SESSION["refererCode"]) && $_SESSION["refererCode"] !== ''){ echo 'readonly'; } ?> value="<?php if(isset($_SESSION["refererCode"]) && $_SESSION["refererCode"] !== ''){ echo esc_attr($_SESSION["refererCode"]); }else{echo esc_attr($referer); } ?>">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Username" autocomplete="off" maxlength="10" id="username" name="username" type="text" value="<?php echo esc_attr($username); ?>" required>
+                <div class="card-modern-footer" style="flex-direction:column;">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Create Account</button>
                 </div>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Email" autocomplete="off" maxlength="50" id="email" name="email" type="email" value="<?php echo esc_attr($email); ?>" required>
-                </div>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Confirm Email" autocomplete="off" maxlength="50" id="confirm_email" name="confirm_email" type="email" value="<?php echo esc_attr($confirm_email); ?>" required>
-                </div>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Password" autocomplete="off" type="password" id="password" maxlength="20" name="password" required>
-                </div>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Referer Code (optional)" autocomplete="off" maxlength="10" id="referer" name="referer" type="text" <?php if(isset($_SESSION["refererCode"]) && $_SESSION["refererCode"] !== ''){ echo 'readonly'; } ?> value="<?php if(isset($_SESSION["refererCode"]) && $_SESSION["refererCode"] !== ''){ echo esc_attr($_SESSION["refererCode"]); }else{echo esc_attr($referer); } ?>">
-                </div>
-                <button type="submit" class="btn btn-primary">Create Account</button>
             </form>
 
             <?php if($configs->getConfig('FACEBOOK_LOGIN_WEB') || $configs->getConfig('GOOGLE_LOGIN_WEB')){ ?>
-            <div class="divider"><span>OR</span></div>
-            <div class="social-login">
+            <div class="divider" style="margin:0 24px;"><span>OR</span></div>
+            <div class="social-login" style="padding:0 24px 16px;">
                 <?php if($configs->getConfig('FACEBOOK_LOGIN_WEB')){ ?>
                 <a href="../admin/controller/oauth.php?provider=Facebook" class="btn btn-facebook">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -77,7 +85,7 @@ include_once("../admin/core/init.inc.php");
             <?php } ?>
         <?php } ?>
 
-        <div class="form-footer">
+        <div class="form-footer" style="margin:0 24px 24px;">
             <span>Already have an account?</span>&nbsp;
             <a href="login.php">Sign In!</a>
         </div>
