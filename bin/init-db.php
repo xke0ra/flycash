@@ -24,8 +24,9 @@ function execSqlFile(PDO $pdo, string $path): void
         if (preg_match('/^\/\*!/', $trimmed)) {
             continue;
         }
-        $buffer .= $line;
-        if (str_ends_with(trim($line), ';')) {
+        $clean = preg_replace('/\s*--.*$/', '', $line);
+        $buffer .= $clean;
+        if (str_ends_with(trim($clean), ';')) {
             $stmt = trim($buffer);
             if ($stmt !== '') {
                 $pdo->exec($stmt);
