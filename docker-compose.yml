@@ -13,9 +13,9 @@ services:
       - ./docker/php.ini:/usr/local/etc/php/conf.d/99-flycash.ini
     environment:
       DB_HOST: db
-      DB_NAME: flycash
-      DB_USER: flycash
-      DB_PASS: flycash_secret
+      DB_NAME: ${DB_NAME:-flycash}
+      DB_USER: ${DB_USER:-flycash}
+      DB_PASS: ${DB_PASS:?set DB_PASS in .env}
       APP_ENV: development
       APP_DEBUG: "true"
       LOG_LEVEL: debug
@@ -32,10 +32,10 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root_secret
-      MYSQL_DATABASE: flycash
-      MYSQL_USER: flycash
-      MYSQL_PASSWORD: flycash_secret
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${DB_NAME:-flycash}
+      MYSQL_USER: ${DB_USER:-flycash}
+      MYSQL_PASSWORD: ${DB_PASS:?set DB_PASS in .env}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -53,8 +53,8 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: db
-      PMA_USER: flycash
-      PMA_PASSWORD: flycash_secret
+      PMA_USER: ${DB_USER:-flycash}
+      PMA_PASSWORD: ${DB_PASS:?set DB_PASS in .env}
       UPLOAD_LIMIT: 64M
     depends_on:
       db:
