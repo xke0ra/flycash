@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
+      - ./.env:/var/www/html/.env
       - ./docker/php.ini:/usr/local/etc/php/conf.d/99-flycash.ini
     environment:
       DB_HOST: db
