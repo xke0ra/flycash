@@ -37,6 +37,12 @@ class Phase0RegressionTest extends TestCase
         parent::tearDown();
     }
 
+    private function clearConfigCache(): void
+    {
+        $service = new \FlyCash\Services\ConfigService($this->getPDO());
+        $service->clearCache();
+    }
+
     // ─── Phase 0.1: gcm_regid crash ───────────────────────────────
 
     public function test_credit_user_points_with_null_gcm_regid_does_not_crash(): void
@@ -98,6 +104,7 @@ class Phase0RegressionTest extends TestCase
             } else {
                 $pdo->prepare("INSERT INTO configuration (config_name, config_value) VALUES ('ADGATEMEDIA_SECRET', 'regression_test_secret')")->execute();
             }
+            $this->clearConfigCache();
 
             $_GET = [
                 'user_id' => 'regression_user',
@@ -150,6 +157,7 @@ class Phase0RegressionTest extends TestCase
             } else {
                 $pdo->prepare("INSERT INTO configuration (config_name, config_value) VALUES ('ADGATEMEDIA_SECRET', :v)")->execute([':v' => $secret]);
             }
+            $this->clearConfigCache();
 
             $userId = 'regression_user2';
             $amount = 150;
