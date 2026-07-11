@@ -8,6 +8,7 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("X-Permitted-Cross-Domain-Policies: none");
 header("Cross-Origin-Resource-Policy: same-origin");
 header("Cross-Origin-Opener-Policy: same-origin");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.youtube.com https://www.youtube.com/iframe_api https://s.ytimg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://api.qrserver.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.youtube.com; connect-src 'self'; form-action 'self'");
 
 // --- Secure Session Config (6.2) ---
 ini_set('session.cookie_httponly', 1);
@@ -39,6 +40,31 @@ if (!$isDev) {
     header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
     ini_set('session.cookie_secure', 1);
 }
+
+// --- Global Exception Handler (Phase 5) ---
+set_exception_handler(function (Throwable $e) {
+    $logger = $GLOBALS['logger'] ?? null;
+    if ($logger) {
+        $logger->error('Uncaught exception', [
+            'message' => $e->getMessage(),
+            'file'    => $e->getFile(),
+            'line'    => $e->getLine(),
+        ]);
+    }
+    $isApi = (strpos($_SERVER['REQUEST_URI'] ?? '', '/api/') !== false);
+    if ($isApi) {
+        header('Content-Type: application/json', true, 500);
+        echo json_encode(['error' => true, 'error_code' => 500, 'error_description' => 'Internal server error.']);
+    } else {
+        header('HTTP/1.0 500 Internal Server Error', true, 500);
+        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>500 Internal Server Error</title>';
+        echo '<style>body{font-family:sans-serif;background:#f8fafc;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}';
+        echo '.card{background:#fff;border-radius:16px;padding:40px;text-align:center;box-shadow:0 20px 50px -12px rgba(0,0,0,.15)}';
+        echo 'h1{font-size:48px;color:#6366f1;margin:0 0 8px}p{color:#64748b;font-size:14px;margin:0}</style>';
+        echo '</head><body><div class="card"><h1>500</h1><p>Something went wrong. Please try again later.</p></div></body></html>';
+    }
+    exit;
+});
 
 // --- IP Ban Check (6.1) ---
 $clientIp = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';

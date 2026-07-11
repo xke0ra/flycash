@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flycash-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/99-flycash.ini
+    environment:
+      DB_HOST: db
+      DB_NAME: flycash
+      DB_USER: flycash
+      DB_PASS: flycash_secret
+      APP_ENV: development
+      APP_DEBUG: "true"
+      LOG_LEVEL: debug
+      APP_TIMEZONE: UTC
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - flycash
+
+  db:
+    image: mysql:8.0
+    container_name: flycash-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: flycash
+      MYSQL_USER: flycash
+      MYSQL_PASSWORD: flycash_secret
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - flycash
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: flycash-pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: flycash
+      PMA_PASSWORD: flycash_secret
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - flycash
+
+volumes:
+  db_data:
+
+networks:
+  flycash:

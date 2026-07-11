@@ -151,7 +151,7 @@ $pagename = 'profile';
                                 <div class="form-text">We'll never share your phone number with anyone.</div>
                             </div>
                         </div>
-                        <div class="card-modern-header" style="border-top:1px solid var(--gray-100);border-bottom:none;justify-content:flex-end;">
+                        <div class="card-modern-footer">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>

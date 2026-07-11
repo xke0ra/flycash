@@ -62,6 +62,12 @@
             $error_message = 'Email & Confirm Email are Different';
         }
 
+        $ip = helper::ip_addr();
+        if (!$configs->checkRateLimit($ip, 'signup', 3, 3600)) {
+            $error = true;
+            $error_message = 'Too many signup attempts. Please try again later.';
+        }
+
         if (!$error) {
 
             $access_data = array();

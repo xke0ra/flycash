@@ -54,7 +54,7 @@ $pagename = 'refer';
 
             <?php include_once("../admin/controller/notices.php"); ?>
 
-            <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;">
+            <div class="refer-layout">
                 <div>
                     <?php include_once 'includes/dashboard_stats_refer.php'; ?>
                 </div>
@@ -63,10 +63,10 @@ $pagename = 'refer';
                         <div class="card-modern-header">
                             <h3>Refer & Earn</h3>
                         </div>
-                        <div class="card-modern-body" style="text-align:center;">
+                        <div class="card-modern-body text-center">
                             <p class="refer-text">Earn unlimited rewards by referring your friends, family and followers. You'll earn <?php echo esc_attr($referReward); ?> points for every user you refer and your referal gets <?php echo esc_attr($referReward); ?> Points too.</p>
 
-                            <div class="input-group" style="max-width:500px;margin:0 auto;">
+                            <div class="input-group mx-auto" style="max-width:500px;">
                                 <input type="text" class="form-control refer-url-input" value="<?php echo esc_attr($userReferURL); ?>" disabled>
                                 <div class="input-group-append">
                                     <a href="#" class="btn btn-secondary" onclick="copyReferURLToClipboard('<?php echo esc_attr($userReferURL); ?>')">
@@ -79,7 +79,7 @@ $pagename = 'refer';
                             <p class="refer-text">Share above Referral Link or unique Referral Code <code class="refer-code"><a href="#" onclick="copyReferCodeToClipboard('<?php echo esc_attr($userReferCode); ?>')"><?php echo esc_attr($userReferCode); ?></a></code> to your Friends & Family.</p>
                             <br>
 
-                            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                            <div class="share-buttons">
                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo esc_attr($userReferURL); ?>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;" target="_blank" class="btn btn-facebook">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                                     Share on Facebook

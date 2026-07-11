@@ -28,7 +28,7 @@ date_default_timezone_set($timezone);
 
 // 4. Initialize Monolog
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 
 $logLevel = strtoupper($_ENV['LOG_LEVEL'] ?? 'ERROR');
@@ -37,15 +37,15 @@ $logFile = __DIR__ . DIRECTORY_SEPARATOR . ($_ENV['LOG_FILE'] ?? 'logs/app.log')
 $logDir = dirname($logFile);
 
 if (!is_dir($logDir)) {
-    mkdir($logDir, 0775, true);
+    mkdir($logDir, 0755, true);
 }
 
 if (!is_writable($logDir)) {
-    chmod($logDir, 0775);
+    chmod($logDir, 0755);
 }
 
 $logger = new Logger('flycash');
-$handler = new StreamHandler($logFile, Level::fromName($logLevel));
+$handler = new RotatingFileHandler($logFile, 30, Level::fromName($logLevel));
 $logger->pushHandler($handler);
 
 $GLOBALS['logger'] = $logger;

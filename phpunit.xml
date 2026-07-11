@@ -15,6 +15,20 @@
       <directory>tests/Feature</directory>
     </testsuite>
   </testsuites>
+  <coverage>
+    <include>
+      <directory>src</directory>
+      <directory>admin/core</directory>
+    </include>
+    <exclude>
+      <directory>vendor</directory>
+      <directory>tests</directory>
+    </exclude>
+    <report>
+      <clover outputFile="coverage.xml"/>
+      <html outputDirectory="coverage-html" lowUpperBound="50" highLowerBound="80"/>
+    </report>
+  </coverage>
   <php>
     <env name="APP_ENV" value="testing"/>
     <env name="DB_HOST" value="localhost"/>

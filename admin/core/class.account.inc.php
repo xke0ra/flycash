@@ -97,7 +97,7 @@ class account extends db_connect
 
         $salt = '';
         $refer = helper::generateRandomString();
-        $passw_hash = password_hash($password, PASSWORD_BCRYPT);
+        $passw_hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
         $currentTime = time();
 
         
@@ -129,7 +129,6 @@ class account extends db_connect
             $result = array("error" => false,
                             'accountId' => $this->id,
                             'username' => $username,
-                            'password' => $password,
                             'error_code' => ERROR_SUCCESS,
                             'error_description' => 'SignUp Success!');
                             
@@ -301,7 +300,9 @@ class account extends db_connect
 
                 if ($passw_hash === $row['passw']) {
 
-                    $newHash = password_hash($password, PASSWORD_BCRYPT);
+                    $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+
+
                     $upd = $this->db->prepare("UPDATE users SET passw = :hash WHERE id = :id");
                     $upd->execute(array(':hash' => $newHash, ':id' => $row['id']));
 
@@ -324,7 +325,7 @@ class account extends db_connect
     public function newPassword($password)
     {
         $newSalt = '';
-        $newHash = password_hash($password, PASSWORD_BCRYPT);
+        $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
         $stmt = $this->db->prepare("UPDATE users SET passw = (:newHash), salt = (:newSalt) WHERE id = (:accountId)");
         $stmt->bindParam(":accountId", $this->id, PDO::PARAM_INT);

@@ -108,7 +108,7 @@ class settings extends db_connect
 				
 				if ($validOld) {
 					
-					$new_passw = password_hash($new_password, PASSWORD_BCRYPT);
+					$new_passw = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => 12]);
 					$stmt = $this->db->prepare("UPDATE admins SET password = :password WHERE id = :id");
 					$stmt->bindParam(":password", $new_passw, PDO::PARAM_STR);
 					$stmt->bindParam(":id", $acid, PDO::PARAM_INT);

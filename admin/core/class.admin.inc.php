@@ -44,7 +44,7 @@ class admin extends db_connect
             return $result;
         }
 
-        $passw_hash = password_hash($password, PASSWORD_BCRYPT);
+        $passw_hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
         $currentTime = time();
 
         $stmt = $this->db->prepare("INSERT INTO admins (username, salt, password, fullname, createAt) value (:username, :salt, :password, :fullname, :createAt)");
@@ -61,7 +61,6 @@ class admin extends db_connect
             $result = array("error" => false,
                             'accountId' => $this->id,
                             'username' => $username,
-                            'password' => $password,
                             'error_code' => ERROR_SUCCESS,
                             'error_description' => 'SignUp Success!');
 
@@ -135,7 +134,7 @@ class admin extends db_connect
 
                 if ($passw_hash === $row['password']) {
 
-                    $newHash = password_hash($password, PASSWORD_BCRYPT);
+                    $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
                     $upd = $this->db->prepare("UPDATE admins SET password = :hash WHERE id = :id");
                     $upd->execute(array(':hash' => $newHash, ':id' => $row['id']));
 

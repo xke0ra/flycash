@@ -71,7 +71,7 @@ class AuthService
 
                 if ($passw_hash === $row['passw']) {
 
-                    $newHash = password_hash($password, PASSWORD_BCRYPT);
+                    $newHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
                     $upd = $this->db->prepare("UPDATE users SET passw = :hash WHERE id = :id");
                     $upd->execute([':hash' => $newHash, ':id' => $row['id']]);
 
@@ -99,7 +99,7 @@ class AuthService
     {
         $result = ["error" => true, "error_description" => "Serious issue, contact developer"];
 
-        $passw_hash = password_hash($password, PASSWORD_BCRYPT);
+        $passw_hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
         $currentTime = time();
         $accountState = defined('ACCOUNT_STATE_ENABLED') ? ACCOUNT_STATE_ENABLED : 1;
 
@@ -127,7 +127,6 @@ class AuthService
                 "error" => false,
                 'accountId' => (int) $this->db->lastInsertId(),
                 'username' => $login,
-                'password' => $password,
                 'error_code' => defined('ERROR_SUCCESS') ? ERROR_SUCCESS : 0,
                 'error_description' => 'SignUp Success!'
             ];

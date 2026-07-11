@@ -739,6 +739,16 @@ img { max-width: 100%; }
   background: var(--footer-bg);
 }
 
+/* ===== ADMIN CONTENT GRID ===== */
+.admin-grid { display: grid; gap: 24px; }
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.admin-grid-3-1 { display: grid; grid-template-columns: 3fr 1fr; gap: 24px; }
+.admin-grid-1-1 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.admin-full { grid-column: 1 / -1; }
+@media (max-width: 800px) {
+  .admin-grid-2, .admin-grid-3-1, .admin-grid-1-1 { grid-template-columns: 1fr; }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .admin-sidebar { transform: translateX(-100%); }

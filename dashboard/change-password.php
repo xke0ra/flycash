@@ -99,7 +99,7 @@ $pagename = 'change-password';
                                 <input type="password" class="form-control" name="confirm_new_password" placeholder="Confirm new password" required>
                             </div>
                         </div>
-                        <div class="card-modern-header" style="border-top:1px solid var(--gray-100);border-bottom:none;justify-content:flex-end;">
+                        <div class="card-modern-footer">
                             <button type="submit" class="btn btn-primary">Update Password</button>
                         </div>
                     </form>

@@ -75,19 +75,19 @@ $pagename = 'transactions';
                         </a>
                     </div>
                 </div>
-                <div class="card-modern-body" style="padding:0;">
-                    <div style="padding:16px 24px;border-bottom:1px solid var(--gray-100);">
-                        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-                            <div style="position:relative;flex:1;min-width:180px;">
-                                <input type="text" class="form-control" placeholder="Search..." id="generalSearch" style="padding-left:36px;">
-                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:14px;">&#128269;</span>
+                <div class="card-modern-body card-fit">
+                    <div class="filter-bar">
+                        <div class="filter-bar-inner">
+                            <div class="search-wrap">
+                                <input type="text" class="form-control" placeholder="Search..." id="generalSearch">
+                                <span class="search-icon">&#128269;</span>
                             </div>
-                            <select class="form-control" id="kt_form_type" style="width:auto;min-width:120px;">
+                            <select class="form-control" id="kt_form_type">
                                 <option value="">All Types</option>
                                 <option value="cr">Credit</option>
                                 <option value="db">Debit</option>
                             </select>
-                            <select class="form-control" id="kt_form_status" style="width:auto;min-width:120px;">
+                            <select class="form-control" id="kt_form_status">
                                 <option value="">All Status</option>
                                 <option value="0">Pending</option>
                                 <option value="1">Success</option>
@@ -96,7 +96,7 @@ $pagename = 'transactions';
                             </select>
                         </div>
                     </div>
-                    <div style="overflow-x:auto;">
+                    <div class="table-wrap">
                         <table class="table-modern" id="html_table">
                             <thead>
                                 <tr>

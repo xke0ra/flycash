@@ -16,6 +16,7 @@ include_once("core/init.inc.php");
 	$error = false;
 	$error_message = array();
 
+	$configs = new functions($dbo);
 	$user_username = '';
 	$user_fullname = '';
 	$user_password = '';
@@ -105,66 +106,41 @@ include_once("core/init.inc.php");
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Admin | Create Account</title>
     <meta name="theme-color" content="#6366f1">
-    <link href="./assets/images/favicon.ico" rel="shortcut icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/css/modern-admin.css?ver=2.0" />
-    <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./assets/css/main.css" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="assets/css/auth.css" />
 </head>
-<body>
-
-<section style="background: url(assets/images/bg.jpg);background-size: cover">
-    <div class="height-100-vh bg-primary-trans">
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="login-div">
-						
-						<?php if ($error){ ?>
-						
-							<div class="alert alert-danger">
-								<?php 
-								foreach ($error_message as $msg) {
-									echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . "<br />";
-								} ?>
-							</div>
-							
-						<?php } ?>
-                        <p class="logo mb-1">Create Admin Account</p>
-                        <p class="mb-4" style="color: #a5b5c5">Remember that now Creating an account for Admin Login!</p>
-                        <form id="needs-validation" action="account.php" method="post" novalidate="" />
-                            <input autocomplete="off" type="hidden" name="authenticity_token" value="<?php echo helper::getAuthenticityToken(); ?>">
-							<div class="form-group">
-                                <label>Full Name</label>
-                                <input class="form-control input-lg" placeholder="Full Name" maxlength="24" id="user_fullname" name="user_fullname" type="text" value="<?php echo htmlspecialchars($user_fullname, ENT_QUOTES, 'UTF-8'); ?>" required="" />
-                                <div class="invalid-feedback">This field is required.</div>
-                            </div>
-							<div class="form-group">
-                                <label>User Name</label>
-                                <input class="form-control input-lg" placeholder="User Name" maxlength="24" id="user_username" name="user_username" type="text" value="<?php echo htmlspecialchars($user_username, ENT_QUOTES, 'UTF-8'); ?>" required="" />
-                                <div class="invalid-feedback">This field is required.</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input class="form-control input-lg" autocomplete="off" placeholder="Password" type="password" id="user_password" maxlength="20" name="user_password" required="" />
-                                <div class="invalid-feedback">This field is required.</div>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Create Admin Account</button>
-
-                        </form>
-                    </div>
-                </div>
+<body class="auth-page">
+    <div class="auth-card">
+        <div class="auth-title">Create Admin Account</div>
+        <div class="auth-subtitle">Set up the initial administrator account to manage the <?php echo htmlspecialchars($configs->getConfig('APP_NAME'), ENT_QUOTES, 'UTF-8'); ?> platform.</div>
+        
+        <?php if ($error){ ?>
+            <div class="alert alert-danger">
+                <?php 
+                foreach ($error_message as $msg) {
+                    echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') . "<br />";
+                } ?>
             </div>
-        </div>
+        <?php } ?>
+        
+        <form action="account.php" method="post" novalidate>
+            <input autocomplete="off" type="hidden" name="authenticity_token" value="<?php echo helper::getAuthenticityToken(); ?>">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input class="form-control" placeholder="Full Name" maxlength="24" id="user_fullname" name="user_fullname" type="text" value="<?php echo htmlspecialchars($user_fullname, ENT_QUOTES, 'UTF-8'); ?>" required />
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input class="form-control" placeholder="Username" maxlength="24" id="user_username" name="user_username" type="text" value="<?php echo htmlspecialchars($user_username, ENT_QUOTES, 'UTF-8'); ?>" required />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input class="form-control" autocomplete="off" placeholder="Password" type="password" id="user_password" maxlength="20" name="user_password" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Create Admin Account</button>
+        </form>
     </div>
-</section>
-
-<script src="./assets/js/jquery-3.2.1.min.js"></script>
-<script src="./assets/js/popper.min.js"></script>
-<script src="./assets/js/bootstrap.min.js"></script>
-
 </body>
 </html>

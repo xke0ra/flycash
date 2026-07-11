@@ -41,7 +41,7 @@ $pagename = 'dashboard';
     <?php if($configs->getConfig("INCOME_OVERVIEW") == 1): ?>
     <div class="admin-stats-grid">
         <?php if($configs->getConfig("INCOME_OVERVIEW_TITLE") == 1): ?>
-        <div class="col-12" style="grid-column:1/-1;padding:0;">
+        <div class="admin-full">
             <div class="section-title"><h4>Income Overview (Approx.)</h4></div>
         </div>
         <?php endif; ?>
@@ -68,8 +68,8 @@ $pagename = 'dashboard';
     <?php endif; ?>
 
     <!-- Charts Row -->
-    <div class="row">
-        <div class="col-md-9">
+    <div class="admin-grid-3-1">
+        <div>
             <div class="admin-graph-card">
                 <div class="graph-label">App Sessions</div>
                 <div class="graph-value"><?php echo $todaySessions; ?></div>
@@ -77,7 +77,7 @@ $pagename = 'dashboard';
                 <canvas id="sessionAanalyticsChart" height="100"></canvas>
             </div>
         </div>
-        <div class="col-md-3">
+        <div>
             <div class="admin-chart-card">
                 <div class="section-title"><h4>Orders</h4></div>
                 <div class="doughnut-wrapper">
@@ -98,11 +98,11 @@ $pagename = 'dashboard';
     </div>
 
     <!-- Tables Row -->
-    <div class="row">
-        <div class="col-md-6">
+    <div class="admin-grid-2">
+        <div>
             <div class="admin-table-card">
                 <div class="card-header"><h5>Recently Registered Users</h5></div>
-                <div class="table-responsive" style="max-height:250px;overflow-y:auto;">
+                <div style="max-height:250px;overflow-y:auto;">
                     <table class="admin-table">
                         <thead>
                             <tr><th>No.</th><th>Fullname</th><th>Email</th><th>Action</th></tr>
@@ -124,10 +124,10 @@ $pagename = 'dashboard';
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div>
             <div class="admin-table-card">
                 <div class="card-header"><h5>Recent Requests</h5></div>
-                <div class="table-responsive" style="max-height:250px;overflow-y:auto;">
+                <div style="max-height:250px;overflow-y:auto;">
                     <table class="admin-table">
                         <thead>
                             <tr><th>User</th><th>Gift Name</th><th>Amount</th><th>Status</th></tr>

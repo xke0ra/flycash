@@ -290,7 +290,7 @@ class Image implements \ArrayAccess
     public function setName($isNameProvided = null)
     {
       if ($isNameProvided) {
-        $this->name = filter_var($isNameProvided, FILTER_SANITIZE_STRING);
+        $this->name = strip_tags($isNameProvided);
       }
 
       return $this;
@@ -362,7 +362,7 @@ class Image implements \ArrayAccess
      *
      * @return $this
      */
-    public function setLocation($dir = 'uploads', $permission = 0666)
+    public function setLocation($dir = 'uploads', $permission = 0755)
     {
       $isDirectoryValid = $this->isDirectoryValid($dir);
 

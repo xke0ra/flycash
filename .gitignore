@@ -44,6 +44,8 @@ install/
 .phpunit.cache/
 tmp/
 temp/
+coverage-html/
+coverage.xml
 
 # Database exports (schema reference is tracked)
 *.sql

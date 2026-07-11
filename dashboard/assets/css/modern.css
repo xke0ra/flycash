@@ -347,6 +347,14 @@ img { max-width: 100%; height: auto; }
 }
 .card-modern-body { padding: 24px; }
 .card-modern-body.card-fit { padding: 0; }
+.card-modern-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
 
 /* ===== OFFERWALL TABS ===== */
 .tabs-modern {
@@ -595,6 +603,65 @@ img { max-width: 100%; height: auto; }
 }
 .sidebar-nav a svg { flex-shrink: 0; }
 .sidebar-nav a.active svg { color: var(--primary); }
+
+/* ===== UTILITY ===== */
+.text-center { text-align: center; }
+.text-muted { color: var(--gray-500); }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.filter-bar-inner {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-bar-inner .search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+.filter-bar-inner .search-wrap .form-control {
+  padding-left: 36px;
+}
+.filter-bar-inner .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  font-size: 14px;
+  pointer-events: none;
+}
+.filter-bar-inner select.form-control {
+  width: auto;
+  min-width: 120px;
+}
+
+/* ===== REFER LAYOUT ===== */
+.refer-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+@media (max-width: 800px) {
+  .refer-layout { grid-template-columns: 1fr; }
+}
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ===== TABLE WRAP ===== */
+.table-wrap {
+  overflow-x: auto;
+}
 
 /* ===== FORMS ===== */
 .form-modern .form-group { margin-bottom: 20px; }
@@ -847,6 +914,35 @@ input.form-control:focus {
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
 }
+.video-list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.video-list-item:last-child { border-bottom: none; }
+.video-list-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.video-list-info { flex: 1; }
+.video-list-info h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+.video-list-info p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--gray-500);
+}
+.video-list-item .btn { white-space: nowrap; }
+
 .video-info {
   background: #fff;
   border: 1px solid var(--gray-200);
