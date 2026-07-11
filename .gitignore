@@ -37,9 +37,6 @@ public/assets/build/
 *.zip
 *.tar.gz
 
-# Installer (remove after deployment)
-install/
-
 # Temp
 .phpunit.cache/
 tmp/
@@ -50,3 +47,4 @@ coverage.xml
 # Database exports (schema reference is tracked)
 *.sql
 !docs/schema_reference.sql
+!install/*.sql

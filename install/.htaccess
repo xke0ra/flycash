@@ -1,0 +1,10 @@
+# Block all access to install directory after setup
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# Fallback: deny from all
+<IfModule !mod_rewrite.c>
+    Deny from all
+</IfModule>
