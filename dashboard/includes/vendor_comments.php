@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 <!--
 Template : FLY CASH - Money Making Script

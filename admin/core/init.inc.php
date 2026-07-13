@@ -8,7 +8,7 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("X-Permitted-Cross-Domain-Policies: none");
 header("Cross-Origin-Resource-Policy: same-origin");
 header("Cross-Origin-Opener-Policy: same-origin");
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.youtube.com https://www.youtube.com/iframe_api https://s.ytimg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://api.qrserver.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.youtube.com; connect-src 'self'; form-action 'self'");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.youtube.com https://www.youtube.com/iframe_api https://s.ytimg.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://api.qrserver.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https:; connect-src 'self'; form-action 'self'");
 
 // --- Secure Session Config (6.2) ---
 ini_set('session.cookie_httponly', 1);
@@ -27,7 +27,7 @@ require __DIR__ . '/../../bootstrap.php';
 $isDev = (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'development');
 
 if (!$isDev) {
-    if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+    if ((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') && (!isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || $_SERVER['HTTP_X_FORWARDED_PROTO'] !== 'https')) {
         if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URI'])) {
             $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             header("Location: " . $redirect);

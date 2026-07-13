@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $rel = dirname(__FILE__);
     include_once($rel."/../admin/core/init.inc.php");
     include_once($rel."/includes/user.inc.php");

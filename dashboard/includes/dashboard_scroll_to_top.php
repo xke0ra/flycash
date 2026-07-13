@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 
 <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">

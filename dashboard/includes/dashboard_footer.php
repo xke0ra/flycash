@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 <footer class="modern-footer">
     <div class="container">

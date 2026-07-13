@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $daily_points = esc_attr($configs->getConfig('DAILY_REWARD'));  // change the points in Admin Panel
 	 
 	 /*

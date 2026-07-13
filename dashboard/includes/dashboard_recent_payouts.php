@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
                                         <div class="kt-portlet">
                                             <div class="kt-portlet__head">

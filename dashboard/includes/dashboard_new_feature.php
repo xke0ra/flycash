@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
                                         <div class="kt-portlet kt-widget19">
                                             <div class="kt-portlet__body kt-portlet__body--fit kt-portlet__body--unfill">

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
                                         <div class="kt-portlet kt-bg-brand kt-portlet--skin-solid">
                                         	<div class="kt-portlet__head ">

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $featured_offerwalls = array();
     $not_offerwalls = array("checkin", "spin", "refer", "redeem", "instructions", "transactions", "share", "rate", "about");
 

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
                                         <div class="row row-full-height">
                                             

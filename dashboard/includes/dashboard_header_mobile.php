@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 <!-- Mobile overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>

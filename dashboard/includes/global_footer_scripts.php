@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 
 		<!--begin::Global Theme Bundle(used by all pages) -->

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $pagename = 'refer';
 	$container = '';
 

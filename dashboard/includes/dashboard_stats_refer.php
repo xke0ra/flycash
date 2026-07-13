@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
                                         <div class="kt-portlet kt-iconbox kt-iconbox--animate">
                                         			<div class="kt-portlet__body">

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 	if (!file_exists('../admin')) {
 	    include_once("includes/notice-admin-not-installed.php");

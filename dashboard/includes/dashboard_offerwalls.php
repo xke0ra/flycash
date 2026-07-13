@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // READ ME
 	 // Wondering How to add new or custom offerwall ? Well, You can Add Custom Offerwall from Admin Panel itself <3
 

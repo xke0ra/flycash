@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 ?>
 <header class="modern-header">
     <div class="header-container">

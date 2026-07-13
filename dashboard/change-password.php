@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $pagename = 'change-password';
 	$container = '';
 
