@@ -54,7 +54,7 @@ class PointsService
 
             if ($notify) {
                 $notif = new \notifications($this->db);
-                $notif->add($userId, $type, $description ?: $type . ' ' . $points . ' points', $points);
+                $notif->add($username, $type, $description ?: $type . ' ' . $points . ' points', $points);
             }
 
             if ($push && !empty($user['gcm_regid'])) {
@@ -167,7 +167,7 @@ class PointsService
 
             if ($notify) {
                 $notif = new \notifications($this->db);
-                $notif->add($userId, $type, $description ?: $type . ' ' . $points . ' points', $points);
+                $notif->add($username, $type, $description ?: $type . ' ' . $points . ' points', $points);
             }
 
             if ($push && !empty($user['gcm_regid'])) {

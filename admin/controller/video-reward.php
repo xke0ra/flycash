@@ -69,7 +69,7 @@ include_once("../core/init.inc.php");
         if($stmt->execute(array(':uid' => $accountId, ':user' => $user, ':checkinReward' => $checkinReward, ':checkinBonusTitle' => $checkinBonusTitle, ':timeCurrent' => $timeCurrent))){
             
             $notif2 = new notifications($dbo);
-            $notif2->add($accountId, 'Video Reward', 'You earned '.$checkinReward.' points from watching a video', $checkinReward);
+            $notif2->add($user, 'Video Reward', 'You earned '.$checkinReward.' points from watching a video', $checkinReward);
             $notify->sendPush($userdata['gcm'], "credit", $checkinReward, "none", "none");
         
         $sql = "INSERT INTO watched_video(user_id, video_id) values (:accountId, :ID)";

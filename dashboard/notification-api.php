@@ -21,21 +21,21 @@ header('Content-Type: application/json');
 switch ($action) {
 
     case 'fetch':
-        $unread = $notif->getUnread($req_user_info['id']);
-        $count = $notif->countUnread($req_user_info['id']);
+        $unread = $notif->getUnread($req_user_info['login']);
+        $count = $notif->countUnread($req_user_info['login']);
         echo json_encode(array('success' => true, 'count' => $count, 'notifications' => $unread));
         break;
 
     case 'read':
         $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
         if ($id > 0) {
-            $notif->markAsRead($id, $req_user_info['id']);
+            $notif->markAsRead($id, $req_user_info['login']);
         }
         echo json_encode(array('success' => true));
         break;
 
     case 'read_all':
-        $notif->markAllAsRead($req_user_info['id']);
+        $notif->markAllAsRead($req_user_info['login']);
         echo json_encode(array('success' => true));
         break;
 
